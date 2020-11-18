@@ -3,10 +3,55 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/css/uikit.min.css" />
+        <link rel="stylesheet" href="{{ asset('CSS/stylesheet.css') }}"/>
+        {% endblock %}
     </head>
     <body>
+    {% if app.user %}
+        <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
+            <div class="uk-navbar-left">
+                <ul class="uk-navbar-nav">
+                    <li><a href="#">Acceuil</a></li>
+                    <li><a href="#">Créer un projet</a></li>
+                    <li>
+                        <a href="#">Mes projets</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li class="uk-active"><a href="#">Consulter mes projets</a></li>
+                                <li><a href="#">•••</a></li>
+                                <li class="uk-active">Voir tous les projets</li>
+                                <li><a href="#">•••</a></li>
+                                <li><a href="#">•••</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="uk-navbar-right">
+                <ul class="uk-navbar-nav">
+                    <li>
+                        <a href="#">Profil</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li class="uk-active"><a href="#">Connecté avec l'adresse <span class="uk-label">{{ app.user.email }}</span></a></li>
+                            <li class="uk-nav-divider"></li>
+                                <li><a uk-icon="icon: file-edit" href="#">Modifier le profil </a></li>
+                                <li class="uk-nav-divider"></li>
+                                <li></a> <a uk-icon="icon: sign-out" href="{{ path('app_logout') }}">Se déconnecter </a></li>     
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    {% endif %}
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+        <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit-icons.min.js"></script>
+        {% endblock %}
+    
     </body>
 </html>
