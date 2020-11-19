@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des projets - Plateforme ERPI{% endblock %}
+
+{% block body %}
+
+<section class="main">
+
+
+        {% for label, messages in app.flashes %}
+            <div class="uk-alert-primary" uk-alert>
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+
+<ul class="uk-breadcrumb">
+    <li><a href="#">Acceuil</a></li>
+    <li><a href="#">Tous les projets</a></li>
+</ul>
+            {% for project in projects %}
+            <div class="uk-card uk-card-default uk-card-body uk-width-1@m">
+            
+                     <h3 class="uk-card-title uk-heading-line"><span>{{ project.title }}<span></h3>
+                     
+                        <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
+                            <li><a href="#">Publié par {{ project.owner.forename }} {{ project.owner.name }}</a></li>
+                            <li><a href="#">18/11/2020</a></li>
+                            <li><a href="#">Suivre</a></li>
+                            <li><a href="#">{{ project.theme }}</a></li>
+                        </ul>
+                            <p>{{project.content}}</p>
+                        </div>
+                        <div class="uk-margin">
+                    {# <td>{{ project.date_start}}</td>
+                    <td>{{ project.date_end }}</td>
+                    <td>{{ project.created_at }}</td> #}
+
+            {% endfor %}
+</section>
+
+{% endblock %}

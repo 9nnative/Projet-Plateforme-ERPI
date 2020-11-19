@@ -13,15 +13,16 @@
         <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
             <div class="uk-navbar-left">
                 <ul class="uk-navbar-nav">
-                    <li><a href="#">Acceuil</a></li>
-                    <li><a href="#">Créer un projet</a></li>
+                    <li><a href="{{ path('main') }}">Acceuil</a></li>
+                    <li><a href="{{ path('project_add') }}">Créer un projet</a></li>
                     <li>
-                        <a href="#">Mes projets</a>
+                        <a href="#">Projets</a>
                         <div class="uk-navbar-dropdown">
                             <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li class="uk-active"><a href="{{ path('allprojects') }}">Voir tous les projets</a></li>
+                                <li class="uk-nav-divider"></li>
                                 <li class="uk-active"><a href="#">Consulter mes projets</a></li>
                                 <li><a href="#">•••</a></li>
-                                <li class="uk-active">Voir tous les projets</li>
                                 <li><a href="#">•••</a></li>
                                 <li><a href="#">•••</a></li>
                             </ul>
@@ -35,7 +36,7 @@
                         <a href="#">Profil</a>
                         <div class="uk-navbar-dropdown">
                             <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-active"><a href="#">Connecté avec l'adresse <span class="uk-label">{{ app.user.email }}</span></a></li>
+                            <li class="uk-active"><p>{{ app.user.forename }} {{ app.user.name }}</p></li>
                             <li class="uk-nav-divider"></li>
                                 <li><a uk-icon="icon: file-edit" href="#">Modifier le profil </a></li>
                                 <li class="uk-nav-divider"></li>
@@ -46,7 +47,9 @@
                 </ul>
             </div>
         </nav>
-    {% endif %}
+        {% endif %}
+
+
         {% block body %}{% endblock %}
         {% block javascripts %}
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit.min.js"></script>

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un projet - Plateforme ERPI{% endblock %}
+
+{% block body %}
+<section class="main">
+
+        {% for label, messages in app.flashes %}
+            <div class="uk-alert-primary" uk-alert>
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+    <h1 class="center">Créer un projet</h1>
+ {{ form_start(formProject) }}
+    {{ form_row(formProject.title, { 'label': 'Titre du projet' }) }}
+    {{ form_row(formProject.theme, { 'label': 'Renseignez un ou plusieurs thèmes' }) }}
+    {{ form_row(formProject.date_start, { 'label': 'Date de début' }) }}
+    {{ form_row(formProject.date_end, { 'label': 'Date de fin' }) }}
+
+    {{ form_row(formProject.content, { 'label': 'Contenu' }) }}
+
+    {{ form_row(formProject.is_private, { 'label': 'Définir en privé' }) }}
+            <div class="uk-margin center">
+       <button type="submit" class="btn uk-button uk-button-default center">Créer</button>
+    </div>
+ {{ form_end(formProject) }}
+</section>
+{% endblock %}
