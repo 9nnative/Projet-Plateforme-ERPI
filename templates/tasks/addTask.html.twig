@@ -19,16 +19,19 @@
  {{ form_start(formTask) }}
     {{ form_row(formTask.title, { 'label': 'Titre de la tâche' }) }}
 
-    {{ form_row(formTask.date_start, { 'label': 'Date de début' }) }}
-
-    {{ form_row(formTask.date_end, { 'label': 'Date de fin' }) }}
+    <br>
+    <div uk-grid>
+    <div class="uk-width-1-3">{{ form_row(formTask.date_start, { 'label': 'Date de début ' }) }}</div>
+    <div class="uk-width-1-3">{{ form_row(formTask.date_end, { 'label': 'Date de fin ' }) }}</div>
+    </div>
+    <br>
 
     {{ form_row(formTask.content, { 'label': 'Contenu' }) }}
-
+ <br>
     {{ form_row(formTask.financial_details, { 'label': 'Détails financiers' }) }}
-
+   <br>
     {{ form_row(formTask.project, { 'label': 'Assigner la tâche au projet :' }) }}
-
+   <br>
         {{ form_row(formTask.is_private, { 'label': 'Définir en privé' }) }}
             <div class="uk-margin center">
        <button type="submit" class="btn uk-button uk-button-default center">Créer</button>

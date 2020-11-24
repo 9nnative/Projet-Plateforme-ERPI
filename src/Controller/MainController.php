@@ -5,9 +5,10 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Entity\User;
+use App\Entity\Files;
+use App\Form\TaskType;
 use App\Entity\Project;
 use App\Form\ProjectType;
-use App\Form\TaskType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -95,9 +96,14 @@ class MainController extends AbstractController
         $task = $this->getDoctrine()
         ->getRepository(Task::class)
         ->findByProject($project);
+
+        $product = $this->getDoctrine()
+        ->getRepository(Files::class)
+        ->findByProject($project);
         
         return $this->render('projects/detailProject.html.twig', [
             'task' => $task,
+            'product' => $product,
             'project' => $project,
         ]);
     }

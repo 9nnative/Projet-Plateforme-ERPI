@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un fichier - Plateforme ERPI{% endblock %}
+
+{% block body %}
+<section class="main">
+ <h1 class="center"><span uk-icon="icon: cloud-upload; ratio: 2"></span> Ajouter un fichier à un projet</h1>
+<br>
+{{ form_start(form) }}
+    {# ... #}
+    
+    {{ form_row(form.brochure) }}
+    {{ form_row(form.summary) }}
+    {{ form_row(form.project) }}
+
+
+        <div class="uk-margin center">
+       <button type="submit" class="btn uk-button uk-button-default center">Uploader</button>
+    </div>
+{{ form_end(form) }}
+</section>
+{% endblock %}

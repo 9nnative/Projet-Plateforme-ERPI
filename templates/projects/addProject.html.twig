@@ -16,23 +16,26 @@
         {% endfor %}
 
     <h1 class="center">Créer un projet</h1>
+     <span class="uk-label"><b>Note</b> : Une fois votre projet créé, <br>vous aurez la possibilité d'y rajouter des fichiers. </span>
  {{ form_start(formProject) }}
     {{ form_row(formProject.title, { 'label': 'Titre du projet' }) }}
 
     {{ form_row(formProject.theme, { 'label': 'Renseignez un ou plusieurs thèmes (mots-clés)' }) }}
-
-    {{ form_row(formProject.date_start, { 'label': 'Date de début' }) }}
-
-    {{ form_row(formProject.date_end, { 'label': 'Date de fin' }) }}
-
+    <br>
+    <div uk-grid>
+    <div class="uk-width-1-3">{{ form_row(formProject.date_start, { 'label': 'Date de début ' }) }}</div>
+    <div class="uk-width-1-3">{{ form_row(formProject.date_end, { 'label': 'Date de fin ' }) }}</div>
+    </div>
+<br>
     {{ form_row(formProject.summary, { 'label': 'Résumé' }) }}
-
+<br>
     {{ form_row(formProject.content, { 'label': 'Contenu' }) }}
-
+<br>
     {{ form_row(formProject.is_private, { 'label': 'Définir en privé' }) }}
-            <div class="uk-margin center">
+    <div class="uk-margin center">
        <button type="submit" class="btn uk-button uk-button-default center">Créer</button>
     </div>
  {{ form_end(formProject) }}
+
 </section>
 {% endblock %}

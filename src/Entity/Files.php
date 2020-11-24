@@ -25,11 +25,6 @@ class Files
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $original_name;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $unique_name;
 
     /**
@@ -41,6 +36,11 @@ class Files
      * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="files")
      */
     private $project;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $summary;
 
     public function getId(): ?int
     {
@@ -55,18 +55,6 @@ class Files
     public function setPath(string $path): self
     {
         $this->path = $path;
-
-        return $this;
-    }
-
-    public function getOriginalName(): ?string
-    {
-        return $this->original_name;
-    }
-
-    public function setOriginalName(string $original_name): self
-    {
-        $this->original_name = $original_name;
 
         return $this;
     }
@@ -103,6 +91,30 @@ class Files
     public function setProject(?Project $project): self
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    public function getBrochureFilename()
+    {
+        return $this->unique_name;
+    }
+
+    public function setBrochureFilename($unique_name)
+    {
+        $this->unique_name = $unique_name;
+
+        return $this;
+    }
+
+    public function getSummary(): ?string
+    {
+        return $this->summary;
+    }
+
+    public function setSummary(string $summary): self
+    {
+        $this->summary = $summary;
 
         return $this;
     }

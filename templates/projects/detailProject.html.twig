@@ -36,6 +36,11 @@
     {% for task in task %}
     <li>{{ task.title }}</li> 
     {% endfor %}
+
+    {% for product in product %}
+    <li><a href="{{ asset('uploads/brochures/' ~ product.uniquename) }}">Voir le document</a></li> 
+    {% endfor %}
+
     </ul>
     <div class="uk-grid-small uk-child-width-auto" uk-grid>
         <div>

@@ -16,3 +16,23 @@
 uk-drop{
   margin-left: 50%;
 }
+.uk-label{
+    margin-left: 33%;
+}
+
+#project_content{
+    height : 500px;
+}
+input[type=file]::-webkit-file-upload-button {
+    border: 1px solid grey;
+    background: #FFFAAA;
+    display:none;
+  }
+
+  @media screen and (max-width: 800px) { 
+    .uk-label{
+        margin-left: 0%;
+        margin-right: 0%;
+        width: 100%;
+    }
+  } 
