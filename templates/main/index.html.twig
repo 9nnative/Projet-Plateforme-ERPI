@@ -3,5 +3,26 @@
 {% block title %}Acceuil - Plateforme ERPI{% endblock %}
 
 {% block body %}
+<section class="main">
+<h1 class="center">Bienvenue sur l'acceuil de la plateforme</h1>
+<h2 class="center">vous souhaitez ...</h2><br>
 
+<div class="uk-child-width-1-2@s" uk-grid>
+    <div>
+        <div class="uk-light uk-background-secondary uk-padding">
+            <h3>Créer un nouveau projet</h3>
+            <p>Créez un projet, affectez-y des mots clés et ajoutez-y des collaborateurs.<br>  Il sera possible de le modifier par la suite.</p>
+            <a href ="{{ path('project_add') }}" class="uk-button uk-button-default">Je créé mon projet</a>
+        </div>
+    </div>
+    <div>
+        <div class="uk-dark uk-background-muted uk-padding">
+            <h3>Accéder à mon espace</h3>
+            <p>Accédez à votre espace personnel, avec suivi des projets et tâches auxquelles vous avez été affectées.</p>
+            <button class="uk-button uk-button-default" disabled>Je consulte mon espace perso</button>
+        </div>
+    </div>
+</div>
+
+</section>
 {% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig'%}
+
+{% block title %}Rechercher un Projet{% endblock %}
+
+{% block body %}
+   
+<h1>Votre recherche</h1>
+<section class="main">
+
+
+        {% for label, messages in app.flashes %}
+            <div class="uk-alert-primary" uk-alert>
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+
+    <div class="form-group">
+    {{ form_start(searchForm) }}
+    {{ form_end(searchForm) }}
+
+
+        </section>
+
+        
+            {# <div class="pagination">
+              {{ knp_pagination_render(project) }}
+           </div> #}
+
+{% endblock %}

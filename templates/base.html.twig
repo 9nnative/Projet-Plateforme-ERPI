@@ -14,7 +14,6 @@
             <div class="uk-navbar-left">
                 <ul class="uk-navbar-nav">
                     <li><a href="{{ path('main') }}">Acceuil</a></li>
-                    <li><a href="{{ path('project_add') }}">Créer un projet</a></li>
                     <li>
                         <a href="#">Projets</a>
                         <div class="uk-navbar-dropdown">
@@ -28,12 +27,23 @@
                             </ul>
                         </div>
                     </li>
+                    <li><a href="{{ path('project_add') }}">Créer un projet</a></li>
+                    <li><a href="{{ path('task_add') }}">Créer une tâche</a></li>
+
                 </ul>
+        <div>
+            <a class="uk-navbar-toggle" uk-search-icon href="#"></a>
+            <div class="uk-drop" uk-drop="mode: click; pos: right; offset: 0">
+                <form class="uk-search uk-search-navbar uk-width-1-1">
+                    <input class="uk-search-input" type="search" placeholder="Rechercher ..." autofocus>
+                </form>
+            </div>
+        </div>
             </div>
             <div class="uk-navbar-right">
                 <ul class="uk-navbar-nav">
                     <li>
-                        <a href="#">Profil</a>
+                        <a href="{{ path('userdetails') }}">Profil</a>
                         <div class="uk-navbar-dropdown">
                             <ul class="uk-nav uk-navbar-dropdown-nav">
                             <li class="uk-active"><p>{{ app.user.forename }} {{ app.user.name }}</p></li>
@@ -51,10 +61,12 @@
 
 
         {% block body %}{% endblock %}
+        
         {% block javascripts %}
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit-icons.min.js"></script>
         {% endblock %}
     
     </body>
+
 </html>

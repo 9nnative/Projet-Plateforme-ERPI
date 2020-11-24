@@ -28,8 +28,15 @@ class ProjectType extends AbstractType{
         ->add('theme', TextType::class, [
             'attr' => ['class' => 'uk-input']
         ])
-        ->add('date_start', DateType::class)
-        ->add('date_end', DateType::class)
+        ->add('date_start', DateType::class, [
+            'widget' => 'single_text',
+        ])
+        ->add('date_end', DateType::class, [
+            'widget' => 'single_text',
+        ])
+        ->add('summary', TextareaType::class, [
+            'attr' => ['class' => 'uk-input'],
+        ])
         ->add('content', TextareaType::class, [
             'attr' => ['class' => 'uk-input'],
         ])

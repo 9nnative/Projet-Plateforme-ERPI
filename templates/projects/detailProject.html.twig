@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail du projet - Plateforme ERPI{% endblock %}
+
+{% block body %}
+
+<section class="main">
+
+        {% for label, messages in app.flashes %}
+            <div class="uk-alert-primary" uk-alert>
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+                <ul class="uk-breadcrumb">
+                    <li><a href="{{ path('main') }}">Acceuil</a></li>
+                    <li><a href="{{ path('allprojects') }}">Tous les projets</a></li>
+                    <li><a href="#">{{ project.title }}</a></li>
+                </ul>
+
+<article class="uk-article">
+
+    <h1 class="uk-article-title"><a class="uk-link-reset" href="">{{ project.title }}</a></h1>
+
+    <p class="uk-article-meta">Rédigé par <b>{{ project.owner.forename }} {{ project.owner.name }}</b> le {{ project.createdat|date('d/m/Y') }}.
+
+    <p class="uk-text-lead">{{ project.summary }}</p>
+
+    <p>{{ project.content }}</p>
+
+    <ul class="uk-list uk-list-striped">
+    {% for task in task %}
+    <li>{{ task.title }}</li> 
+    {% endfor %}
+    </ul>
+    <div class="uk-grid-small uk-child-width-auto" uk-grid>
+        <div>
+            <a class="uk-button uk-button-text" href="#">Suivre</a>
+        </div>
+        <div>
+            <a class="uk-button uk-button-text" href="#">0 Commentaires</a>
+        </div>
+    </div>
+
+
+</article>
+
+</section>
+
+{% endblock %}

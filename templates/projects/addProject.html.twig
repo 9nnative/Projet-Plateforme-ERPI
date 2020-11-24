@@ -18,9 +18,14 @@
     <h1 class="center">Créer un projet</h1>
  {{ form_start(formProject) }}
     {{ form_row(formProject.title, { 'label': 'Titre du projet' }) }}
-    {{ form_row(formProject.theme, { 'label': 'Renseignez un ou plusieurs thèmes' }) }}
+
+    {{ form_row(formProject.theme, { 'label': 'Renseignez un ou plusieurs thèmes (mots-clés)' }) }}
+
     {{ form_row(formProject.date_start, { 'label': 'Date de début' }) }}
+
     {{ form_row(formProject.date_end, { 'label': 'Date de fin' }) }}
+
+    {{ form_row(formProject.summary, { 'label': 'Résumé' }) }}
 
     {{ form_row(formProject.content, { 'label': 'Contenu' }) }}
 

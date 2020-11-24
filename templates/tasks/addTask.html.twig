@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une tâche - Plateforme ERPI{% endblock %}
+
+{% block body %}
+<section class="main">
+
+        {% for label, messages in app.flashes %}
+            <div class="uk-alert-primary" uk-alert>
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+    <h1 class="center">Créer une tâche</h1>
+ {{ form_start(formTask) }}
+    {{ form_row(formTask.title, { 'label': 'Titre de la tâche' }) }}
+
+    {{ form_row(formTask.date_start, { 'label': 'Date de début' }) }}
+
+    {{ form_row(formTask.date_end, { 'label': 'Date de fin' }) }}
+
+    {{ form_row(formTask.content, { 'label': 'Contenu' }) }}
+
+    {{ form_row(formTask.financial_details, { 'label': 'Détails financiers' }) }}
+
+    {{ form_row(formTask.project, { 'label': 'Assigner la tâche au projet :' }) }}
+
+        {{ form_row(formTask.is_private, { 'label': 'Définir en privé' }) }}
+            <div class="uk-margin center">
+       <button type="submit" class="btn uk-button uk-button-default center">Créer</button>
+    </div>
+ {{ form_end(formTask) }}
+</section>
+{% endblock %}

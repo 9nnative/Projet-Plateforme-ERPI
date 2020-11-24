@@ -8,3 +8,11 @@
     text-align: center;
 
 }
+
+.uk-search-input{
+    width: 200%;
+}
+
+uk-drop{
+  margin-left: 50%;
+}
