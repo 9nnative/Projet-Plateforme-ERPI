@@ -33,16 +33,16 @@ class TaskType extends AbstractType
                 'attr' => ['class' => 'uk-input'] 
             ])
             ->add('is_private')
-            ->add('project', EntityType::class, [
-                // looks for choices from this entity
-                'class' => Project::class,
-                'attr' => ['class' => 'uk-select'],
-                // uses the User.username property as the visible option string
-                'choice_label' => 'title',
-                // used to render a select box, check boxes or radios
-                // 'multiple' => true,
-                // 'expanded' => true,
-            ])
+            // ->add('project', EntityType::class, [
+            //     // looks for choices from this entity
+            //     'class' => Project::class,
+            //     'attr' => ['class' => 'uk-select'],
+            //     // uses the User.username property as the visible option string
+            //     'choice_label' => 'title',
+            //     // used to render a select box, check boxes or radios
+            //     // 'multiple' => true,
+            //     // 'expanded' => true,
+            // ])
         ;
     }
 

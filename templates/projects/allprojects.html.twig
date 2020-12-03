@@ -20,7 +20,7 @@
                     <li><a href="{{ path('main') }}">Acceuil</a></li>
                     <li><a href="{{ path('allprojects') }}">Tous les projets</a></li>
                 </ul>
-            {% for project in projects %}
+            {% for project in project %}
             <div class="uk-card uk-card-default uk-card-body uk-width-1@m uk-card-hover">
             
                      <h3 class="uk-card-title uk-heading-line"><span>{{ project.title }}<span></h3>
@@ -31,17 +31,17 @@
                            
                             <b>{{ project.theme }}</b>
                         </p>
-                            <p>{{project.content}}</p>
+                            <p>{{project.summary}}</p>
                                 <div class="uk-grid-small uk-child-width-auto" uk-grid>
                                     <div>
-                                        <a class="uk-button uk-button-text"  href="#">Suivre</a>
+                                        <a class="uk-button uk-button-text"  href="{{ path('followproject', {'id':project.id}) }}">Suivre</a>
                                     </div>
                                     <div>
                                         <a class="uk-button uk-button-text"  href="{{ path('project_details', {'id':project.id}) }}">Voir plus</a>
                                     </div>
-                                    <div>
-                                        <a class="uk-button uk-button-text" href="#">0 Commentaires</a>
-                                    </div>
+                                    {# {% if user.follow %}
+                                        <p>Vous suivez déjà ce projet</p>
+                                    {% endif %} #}
                             </div>
 
                         </div>

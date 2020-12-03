@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Aide - Plateforme ERPI{% endblock %}
+
+{% block body %}
+<section class="main">
+
+                <ul class="uk-breadcrumb">
+                    <li><a href="{{ path('main') }}">Acceuil</a></li>
+                    <li><a href="#">Aide</a></li>
+                </ul>
+                
+<h1 class="center"><span uk-icon="icon: lifesaver; ratio: 2"></span> Besoin d'aide ?</h1>
+
+<dl class="uk-description-list">
+<div class="uk-card uk-card-default uk-card-hover uk-card-body">
+    <dt>Éditeur de texte</dt>
+    <dd>Je souhaite me renseigner sur les possibilités que m'offre l'éditeur de textes. <a>Voir plus ...</a></dd>
+</div>
+<br>
+<div class="uk-card uk-card-default uk-card-hover uk-card-body">
+    <dt>Je souhaite ajouter un document PDF à un projet</dt>
+    <dd>Il est bien évidemment possible de lier un document PDF à votre projet. <a>Voir plus ...</a></dd>
+</div>
+<br>
+<div class="uk-card uk-card-default uk-card-hover uk-card-body">
+    <dt>Je souhaite rapporter un bug</dt>
+    <dd>En cas de bug ou non-fonctionnement de l'application, veuillez contacter <a>9nnative@gmail.com<a>.</dd>
+</div>
+</div>
+</section>
+{% endblock %}

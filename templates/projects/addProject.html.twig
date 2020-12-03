@@ -16,7 +16,7 @@
         {% endfor %}
 
     <h1 class="center">Créer un projet</h1>
-     <span class="uk-label"><b>Note</b> : Une fois votre projet créé, <br>vous aurez la possibilité d'y rajouter des fichiers. </span>
+     <span class="uk-label prj"><b>Note</b> : Une fois votre projet créé, <br>vous aurez la possibilité d'y rajouter des fichiers. </span>
  {{ form_start(formProject) }}
     {{ form_row(formProject.title, { 'label': 'Titre du projet' }) }}
 
@@ -29,6 +29,7 @@
 <br>
     {{ form_row(formProject.summary, { 'label': 'Résumé' }) }}
 <br>
+<span class="uk-label prj"><b>Note</b> : Le guide de l'éditeur de textes est disponible<br>dans la rubrique "Besoin d'aide ?"</span>
     {{ form_row(formProject.content, { 'label': 'Contenu' }) }}
 <br>
     {{ form_row(formProject.is_private, { 'label': 'Définir en privé' }) }}

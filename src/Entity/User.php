@@ -80,11 +80,23 @@ class User implements UserInterface
      */
     private $type;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user")
+     */
+    private $comments;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Project::class, inversedBy="users", cascade={"persist", "remove"})
+     */
+    private $follow;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
         $this->tasks = new ArrayCollection();
         $this->types = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->follow = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -297,4 +309,63 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getFollow(): Collection
+    {
+        return $this->follow;
+    }
+
+    public function addFollow(Project $follow): self
+    {
+        if (!$this->follow->contains($follow)) {
+            $this->follow[] = $follow;
+        }
+
+        return $this;
+    }
+
+    public function removeFollow(Project $follow): self
+    {
+        $this->follow->removeElement($follow);
+
+        return $this;
+    }
+    public function FindByUser()
+    {
+        return $this->createQueryBuilder('user')
+            ->andWhere('user.isScientist = :isScientist')
+            ->setParameter('isScientist', true);
+    }
 }

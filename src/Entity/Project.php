@@ -81,10 +81,27 @@ class Project
      */
     private $summary;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="project")
+     */
+    private $comments;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="follow")
+     */
+    private $users;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="projects")
+     */
+    private $state;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
         $this->files = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -291,4 +308,74 @@ class Project
 
         return $this;
     }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getProject() === $this) {
+                $comment->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addFollow($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeFollow($this);
+        }
+
+        return $this;
+    }
+
+    public function getState(): ?State
+    {
+        return $this->state;
+    }
+
+    public function setState(?State $state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+    
 }

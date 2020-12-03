@@ -71,6 +71,11 @@ class Task
      */
     private $files;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="tasks",cascade={"persist"})
+     */
+    private $state;
+
     public function __construct()
     {
         $this->files = new ArrayCollection();
@@ -215,6 +220,18 @@ class Task
                 $file->setTask(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getState(): ?State
+    {
+        return $this->state;
+    }
+
+    public function setState(?State $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

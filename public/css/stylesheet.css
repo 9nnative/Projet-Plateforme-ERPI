@@ -1,27 +1,47 @@
 .main{
     margin-left: 15%;
     margin-right: 15%;
-    margin-top: 1rem;
+    margin-top: 1rem; 
 }
 
 .center{
     text-align: center;
-
+    margin-top: 20px;
 }
 
-.uk-search-input{
-    width: 200%;
+.modalprofil{
+    width: 15rem !important;
 }
-
-uk-drop{
-  margin-left: 50%;
+.search{
+    top: 10rem !important;
+    right: -20rem !important;
 }
-.uk-label{
+.prj{
     margin-left: 33%;
+}
+
+/* .labelstate{
+    position: absolute !important;
+    left: 80% !important;
+} */
+
+.navbar{
+    margin-top : 1rem !important;
+    margin-left : 1rem !important;
 }
 
 #project_content{
     height : 500px;
+}
+#comment_content{
+    height: 200%;
+}
+#commentbutton{
+    margin-bottom: 5rem;
+}
+
+.uk-countdown{
+    margin-left : 10%;
 }
 input[type=file]::-webkit-file-upload-button {
     border: 1px solid grey;
@@ -30,9 +50,12 @@ input[type=file]::-webkit-file-upload-button {
   }
 
   @media screen and (max-width: 800px) { 
-    .uk-label{
+    .prj{
         margin-left: 0%;
-        margin-right: 0%;
-        width: 100%;
+        margin-right: 5%;
+        width: 80%;
+    }
+    .uk-countdown{
+        margin-left : 0%;
     }
   } 

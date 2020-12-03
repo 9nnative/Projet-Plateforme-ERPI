@@ -12,123 +12,84 @@
 
     <body>
     {% if app.user %}
-        <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
-            <div class="uk-navbar-left">
-                <ul class="uk-navbar-nav">
-                    <li><a href="{{ path('main') }}">Acceuil</a></li>
-                    <li>
-                        <a href="#">Projets</a>
-                        <div class="uk-navbar-dropdown">
-                            <ul class="uk-nav uk-navbar-dropdown-nav">
-                                <li class="uk-active"><a href="{{ path('allprojects') }}">Voir tous les projets</a></li>
-                                <li class="uk-nav-divider"></li>
-                                <li class="uk-active"><a href="#">Consulter mes projets</a></li>
-                                <li><a href="#">•••</a></li>
-                                <li><a href="#">•••</a></li>
-                                <li><a href="#">•••</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li><a href="{{ path('project_add') }}">Créer un projet</a></li>
-                    <li><a href="{{ path('task_add') }}">Créer une tâche</a></li>
-
-                </ul>
-        <div>
-            <a class="uk-navbar-toggle" uk-search-icon href="#"></a>
-            <div class="uk-drop" uk-drop="mode: click; pos: right; offset: 0">
-                <form class="uk-search uk-search-navbar uk-width-1-1">
-                    <input class="uk-search-input" type="search" placeholder="Rechercher ..." autofocus>
-                </form>
-            </div>
-        </div>
-            </div>
+        
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">   
+            <div class="uk-position-top-right navbarprofil">
             <div class="uk-navbar-right">
                 <ul class="uk-navbar-nav">
                     <li>
-                        <a href="{{ path('userdetails') }}">Profil</a>
-                        <div class="uk-navbar-dropdown">
-                            <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-active"><p>{{ app.user.forename }} {{ app.user.name }}</p></li>
+                        <a uk-toggle="target: #modal-profil" href="#">Profil</a>
+                            <div id="modal-profil" uk-modal>
+                                <div class="uk-modal-dialog uk-modal-body modalprofil">
+                                <button class="uk-modal-close-default" type="button" uk-close></button>
+                          <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li class="uk-active"><p>{{ app.user.forename }} {{ app.user.name }}</p></li>                             
+                            <li class="uk-nav-divider"></li>
+                                <li><a uk-icon="icon:  lifesaver" href="{{ path('help') }}">Besoin d'aide ? </a></li>
                             <li class="uk-nav-divider"></li>
                                 <li><a uk-icon="icon: file-edit" href="#">Modifier le profil </a></li>
+
                                 <li class="uk-nav-divider"></li>
                                 <li></a> <a uk-icon="icon: sign-out" href="{{ path('app_logout') }}">Se déconnecter </a></li>     
                             </ul>
-                        </div>
+                            </li>       
+                                <br>
+                      
+                                </div>
+                            </div> 
+
+
+
+
+
+
+
+
                     </li>
                 </ul>
             </div>
-        </nav>
+            </div>
+            </div>
+        
+<div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">       
+<div class="uk-position-top-left navbar">
+    <ul class="uk-nav-primary uk-nav-parent-icon" uk-nav>
+        <li class="uk-active"><a href="{{ path('main') }}">Acceuil</a></li>
+        <li class="uk-parent">
+            <a href="#">Projets</a>
+            <ul class="uk-nav-sub">
+                <li><a href="{{ path('project_add') }}">Créer un nouveau projet</a></li>
+                <li><a href="{{ path('allprojects') }}">Voir tous les projets</a></li>
+            </ul>
+        </li>
+        <li class="uk-parent">
+            <a href="">Dashboard</a>
+            <ul class="uk-nav-sub">
+                <li><a href="{{ path('dashboard') }}">Mon dashboard</a></li>
+            </ul>
+        </li>
+        <li>       
+            <div class="uk-margin">
+                <form class="uk-search uk-search-default">
+                    <span class="uk-search-icon-flip" uk-search-icon></span>
+                    <input class="uk-search-input" type="search" placeholder="Rechercher ...">
+                </form>
+            </div>
+        </li>
+    </ul>
+</div>
+</div>
+
         {% endif %}
 
 
-        {% block body %}{% endblock %}
+        {% block body %}        {% endblock %}
 
 
         {% block javascripts %}
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit-icons.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script>
-
-    var bar = document.getElementById('js-progressbar');
-
-    UIkit.upload('.js-upload', {
-
-        url: '../public/uploads/brochures',
-        multiple: true,
-
-        beforeSend: function () {
-            console.log('beforeSend', arguments);
-        },
-        beforeAll: function () {
-            console.log('beforeAll', arguments);
-        },
-        load: function () {
-            console.log('load', arguments);
-        },
-        error: function () {
-            console.log('error', arguments);
-        },
-        complete: function () {
-            console.log('complete', arguments);
-        },
-
-        loadStart: function (e) {
-            console.log('loadStart', arguments);
-
-            bar.removeAttribute('hidden');
-            bar.max = e.total;
-            bar.value = e.loaded;
-        },
-
-        progress: function (e) {
-            console.log('progress', arguments);
-
-            bar.max = e.total;
-            bar.value = e.loaded;
-        },
-
-        loadEnd: function (e) {
-            console.log('loadEnd', arguments);
-
-            bar.max = e.total;
-            bar.value = e.loaded;
-        },
-
-        completeAll: function () {
-            console.log('completeAll', arguments);
-
-            setTimeout(function () {
-                bar.setAttribute('hidden', 'hidden');
-            }, 1000);
-
-            alert('Upload Completed');
-        }
-
-    });
-
-</script>
         {% endblock %}
     
     </body>

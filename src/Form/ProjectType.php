@@ -5,6 +5,7 @@ namespace App\Form;
 use DateTime;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
@@ -34,10 +35,10 @@ class ProjectType extends AbstractType{
         ->add('date_end', DateType::class, [
             'widget' => 'single_text',
         ])
-        ->add('summary', TextareaType::class, [
+        ->add('summary',TextType::class, [
             'attr' => ['class' => 'uk-input'],
         ])
-        ->add('content', TextareaType::class, [
+        ->add('content', CKEditorType::class, [
             'attr' => ['class' => 'uk-input'],
         ])
         ->add('is_private', CheckBoxType::class,[

@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Aide - Plateforme ERPI{% endblock %}
+
+{% block body %}
+<section class="main">
+
+        {% for label, messages in app.flashes %}
+            <div class="uk-alert-primary" uk-alert>
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+                <ul class="uk-breadcrumb">
+                    <li><a href="{{ path('main') }}">Acceuil</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
+<h1 class="center">Dashboard</h1>
+
+<div class="uk-text-center" uk-grid>
+    <div class="uk-width-1-3">
+        <div class="uk-card uk-card-default uk-card-body">
+        <h3 class="uk-card-title">Je participe à ces projets :</h3>
+        <ul class="uk-list uk-link-text uk-list-striped">
+        {% for prjfollowed in prjfollowed %}
+            <li><a href="{{ path('project_details', {'id':prjfollowed.id}) }}">{{ prjfollowed.title }}</a></li> 
+    {% endfor %}
+        </ul>
+        </div>
+    </div>
+    <div class="uk-width-1-3">
+        <div class="uk-card uk-card-default uk-card-body">
+                <h3 class="uk-card-title">Mes tâches :</h3>
+        <ul class="uk-list uk-list-striped">
+            <li>List item 1</li>
+            <li>List item 2</li>
+            <li>List item 3</li>
+        </ul>
+        </div>
+    </div>
+    <div class="uk-width-1-3">
+        <div class="uk-card uk-card-large uk-card-default uk-card-body">1-3</div>
+    </div>
+</div>
+
+<div class="uk-text-center" uk-grid>
+    <div class="uk-width-1-2">
+        <div class="uk-card uk-card-default uk-card-body">1-2</div>
+    </div>
+    <div class="uk-width-1-2">
+        <div class="uk-card uk-card-default uk-card-body">1-2</div>
+    </div>
+</div>
+
+
+</section>
+{% endblock %}

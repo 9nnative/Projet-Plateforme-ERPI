@@ -10,6 +10,23 @@
 <p>Prénom, Nom : {{ app.user.forename }} {{ app.user.name }}</p>
 <p>E-mail : <b>{{ app.user.email }}</b></p>
 <p>Entreprise/École : {{app.user.company}} {{app.user.school}}</p>
+
+                
+                        
+                        
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li class="uk-active"><p>{{ app.user.forename }} {{ app.user.name }}</p></li>                             
+                            <li class="uk-nav-divider"></li>
+                                <li><a uk-icon="icon:  lifesaver" href="{{ path('help') }}">Besoin d'aide ? </a></li>
+                            <li class="uk-nav-divider"></li>
+                                <li><a uk-icon="icon: file-edit" href="#">Modifier le profil </a></li>
+
+                                <li class="uk-nav-divider"></li>
+                                <li></a> <a uk-icon="icon: sign-out" href="{{ path('app_logout') }}">Se déconnecter </a></li>     
+                            </ul>
+                        
+                    </li>
+        
 <button class ="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-example"> Modifier mon profil </a>
 </div>
 

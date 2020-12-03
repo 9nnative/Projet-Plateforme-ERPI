@@ -25,31 +25,196 @@
 <article class="uk-article">
 
     <h1 class="uk-article-title"><a class="uk-link-reset" href="">{{ project.title }}</a></h1>
-
+    {% if project.state == false %}
+    <span class="uk-label">Nouveau</span>
+    {% endif %}
+        {% if project.state.id == '1' %}
+        <span class="uk-label uk-label-success labelstate">Projet fini</span>
+        {% endif %}
+        {% if project.state.id == '2' %}
+        <span class="uk-label uk-label-warning labelstate">Projet en cours</span>
+        {% endif %}
+        {% if project.state.id == '3' %}
+        <span class="uk-label uk-label-warning labelstate">Projet annulé</span>
+        {% endif %}
     <p class="uk-article-meta">Rédigé par <b>{{ project.owner.forename }} {{ project.owner.name }}</b> le {{ project.createdat|date('d/m/Y') }}.
 
+    
     <p class="uk-text-lead">{{ project.summary }}</p>
 
-    <p>{{ project.content }}</p>
+    <div class="container">
+    <div class="row">
+    <p>{{ project.content|raw }}</p>
+    </div>
+    <hr>
+    <h3>Tâches <span class="uk-label">{{ nbtasks }}</span></h3>
+    <table class="uk-table uk-table-middle">
+    <thead>
+        <tr>
+            <th>Titre de la tâche</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>État</th>
+            <th>Détails</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        {% for task in task %}
+        <tr>
+        <td>{{ task.title }}</td>
+        <td>{{ task.datestart|date('d/m/Y') }}</td>
+        <td>{{ task.dateend|date('d/m/Y') }}</td>
+        <td>{% if task.state == false %}
+            <span class="uk-label">Nouveau</span>
+            {% endif %}
+            {% if task.state.id == '1' %}
+            <span  class="uk-label uk-label-success labelstate">Terminée</span>
+            {% endif %}
+            {% if task.state.id == '2' %}
+            <span class="uk-label uk-label-warning labelstate">En cours</span>
+            {% endif %}
+            {% if task.state.id == '3' %}
+            <span class="uk-label uk-label-warning labelstate">Annulée</span>
+            {% endif %}
+            {% if task.state.id == '4' %}
+            <span class="uk-label labelstate"><a class="" href="" uk-tooltip="Il n'y a aucun état de défini pour cette tâche. Cliquez ici pour en définir une." uk-icon="icon: bolt"></a></span>
+              </td>
+              {% endif %}
+        <td><a href="{{ path('task_details', {'id':task.id}) }}" uk-toggle="target: #modal-details-task" uk-tooltip="{{ task.content }}" uk-icon="icon: info"></a></td>
+        </tr>
+            
+        {% endfor %}
+    </tbody>
+</table>
 
-    <ul class="uk-list uk-list-striped">
-    {% for task in task %}
-    <li>{{ task.title }}</li> 
+
+    
+<button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-add-task">Créer une tâche</button>
+<div id="modal-add-task" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    {{ form_start(formTask) }}
+     {{ form_row(formTask.title, { 'label': 'Titre de la tâche' }) }} 
+
+    <br>
+    <div uk-grid>
+    <div class="uk-width-1-3">{{ form_row(formTask.date_start, { 'label': 'Date de début ' }) }}</div>
+    <div class="uk-width-1-3">{{ form_row(formTask.date_end, { 'label': 'Date de fin ' }) }}</div>
+    </div>
+    <br>
+
+    {{ form_row(formTask.content, { 'label': 'Contenu' }) }}
+ <br>
+    {{ form_row(formTask.financial_details, { 'label': 'Détails financiers' }) }}
+   <br>
+        {{ form_row(formTask.is_private, { 'label': 'Définir en privé' }) }}
+            <div class="uk-margin center">
+       <button type="submit" class="btn uk-button uk-button-default center">Créer</button>
+    </div>
+ {{ form_end(formTask) }}
+    </div>
+</div>
+
+    <hr>
+    
+    <h3>Documents <span class="uk-label">{{ nbdocs }}</span></h3> 
+    
+    <ul class="uk-list">
+    {% for allproducts in allproducts %}
+    <li>{{ allproducts.summary }} <a href="{{ asset('uploads/brochures/' ~ allproducts.uniquename) }}">Voir le document</a></li> 
     {% endfor %}
-
-    {% for product in product %}
-    <li><a href="{{ asset('uploads/brochures/' ~ product.uniquename) }}">Voir le document</a></li> 
-    {% endfor %}
-
     </ul>
+
+    <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-add-file">Ajouter un document</button>
+   <div id="modal-add-file" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    {{ form_start(formFile) }}
+    {# ... #}
+    
+    {{ form_row(formFile.brochure) }}
+    <br>
+    {{ form_row(formFile.summary) }}
+
+        <div class="uk-margin center">
+       <button type="submit" class="btn uk-button uk-button-default center">Uploader</button>
+    </div>
+{{ form_end(formFile) }}
+    </div>
+</div> 
+    <hr>
+
+     <h3>Followers <span class="uk-label">{{ nbfollows }}</span></h3>
+     <ul class="uk-list">
+    {% for prjfollowed in prjfollowed %}
+    <li>{{ prjfollowed.name }} {{ prjfollowed.forename }} </li> 
+    {% endfor %}
+    </ul>
+    <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-add-user" disabled>Ajouter un ou plusieurs participants</button>
+   <div id="modal-add-user" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    {{ form_start(formAddUsers) }}
+    {# ... #}
+    
+    {{ form_row(formAddUsers.users) }}
+    <br>
+
+        <div class="uk-margin center">
+       <button type="submit" class="btn uk-button uk-button-default center" >Ajouter</button>
+    </div>
+{{ form_end(formAddUsers) }}
+    </div>
+</div> 
+
+    <br><br>
+    
     <div class="uk-grid-small uk-child-width-auto" uk-grid>
         <div>
-            <a class="uk-button uk-button-text" href="#">Suivre</a>
+            <a class="uk-button uk-button-text" href="#">Suivre ce projet</a>
         </div>
         <div>
-            <a class="uk-button uk-button-text" href="#">0 Commentaires</a>
+            <a class="uk-button uk-button-text" href="#">{{ nbcomments }} Commentaires</a>
         </div>
     </div>
+
+
+
+
+
+    <hr>
+    <ul class="uk-comment-list">
+    <li>
+        {% for comments in comments %}
+        <div class ="uk-margin">
+        <article class="uk-comment-primary uk-visible-toggle" tabindex="-1">
+            <header class="uk-comment-header uk-position-relative">
+                <div class="uk-grid-medium uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                        <h4 class="uk-comment-title uk-margin-remove"><a class="uk-link-reset" href="#">{{ comments.user.forename }} {{ comments.user.name }}</a></h4>
+                        <p class="uk-comment-meta uk-margin-remove-top"><a class="uk-link-reset" href="#">{{ comments.createdat|date("m/d/Y H:i", "Europe/Paris") }}</a></p>
+                    </div>
+                </div>
+                <div class="uk-position-top-right uk-position-small uk-hidden-hover"><a class="uk-link-muted" href="#">Répondre</a></div>
+            </header>
+            <div class="uk-comment-body">
+                <p>{{ comments.content }}</p>
+            </div>
+        </article>
+        </div>
+        {% endfor %}
+    </ul>
+
+ {{ form_start(formComment) }}
+ 
+    {{ form_row(formComment.content, { 'label': 'Votre commentaire :' }) }}
+    <div id="commentbutton" class="uk-margin center">
+        <button type="submit" class="btn uk-button uk-button-default center">Commenter</button>
+    </div>
+ {{ form_end(formComment) }}
+
+
 
 
 </article>
