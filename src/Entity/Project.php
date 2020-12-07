@@ -96,6 +96,11 @@ class Project
      */
     private $state;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $progress;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -374,6 +379,18 @@ class Project
     public function setState(?State $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getProgress(): ?int
+    {
+        return $this->progress;
+    }
+
+    public function setProgress(?int $progress): self
+    {
+        $this->progress = $progress;
 
         return $this;
     }

@@ -1,0 +1,78 @@
+{% extends 'base.html.twig'%}
+
+{% block title %}Édition du profil - Plateforme ERPI{% endblock %}
+
+{% block body %}
+<section class="main">
+<br>
+
+<div class="uk-card uk-card-default uk-card-hover uk-card-body centerlogin cardlogin">
+ {{ form_start(formUser) }}
+         {% for label, messages in app.flashes %}
+            <div class="uk-alert-primary" uk-alert>
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% endfor %}
+                </div>
+            <h3 class="uk-card-title">Édition du profil</h3>
+
+            <br>
+
+                       {# {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %} #}
+        <ul uk-accordion="multiple: true">
+    <li class="uk-open">
+        <a class="uk-accordion-title" href="#">Informations personelles</a>
+        <div class="uk-accordion-content">
+        {{ form_row(formUser.type, { 'label': 'Vous êtes ...' }) }}
+        <br>
+        <div class="uk-text-center" uk-grid>
+    <div class="uk-width-1-2">
+        {{ form_row(formUser.name, { 'label': 'Nom' }) }}
+    </div>
+    <div class="uk-width-1-2">
+        {{ form_row(formUser.forename, { 'label': 'Prénom' }) }}
+    </div>
+    </div>
+            <div class="uk-text-center" uk-grid>
+    <div class="uk-width-1-2">
+         {{ form_row(formUser.company, { 'label': 'Entreprise' }) }}
+    </div>
+    <div class="uk-width-1-2">
+       {{ form_row(formUser.school, { 'label': 'École' }) }}
+    </div>
+    
+    </div>
+    <br>
+        {{ form_row(formUser.bio, { 'label': 'Votre bio' }) }}
+    </li>
+    
+    <li>
+        <a class="uk-accordion-title" href="#">Identifiant de connexion</a>
+        <div class="uk-accordion-content">
+            {{ form_row(formUser.email, { 'label': 'E-mail' }) }}
+        </div>
+    </li>
+    <li>
+        <a class="uk-accordion-title" href="#">Ajouter ou modifier une photo de profil</a>
+        <div class="uk-accordion-content">
+            <p>Fonctionnalitée à venir <a>voir les notes de patch</a></p>
+        </div>
+    </li>
+</ul>
+
+
+        {# {{ form_row(formUser.type, { 'label': 'Vous êtes ...' }) }} #}
+        <br>
+    <div class="uk-margin center">
+       <button type="submit" class="btn uk-button uk-button-default center">Sauvegarder</button>
+    </div>
+ {{ form_end(formUser) }}
+
+</div>
+</section>
+{% endblock %}

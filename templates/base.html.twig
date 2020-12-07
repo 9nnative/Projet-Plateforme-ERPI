@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class ="theme">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -20,31 +20,23 @@
                     <li>
                         <a uk-toggle="target: #modal-profil" href="#">Profil</a>
                             <div id="modal-profil" uk-modal>
-                                <div class="uk-modal-dialog uk-modal-body modalprofil">
+                                <div class="uk-modal-dialog uk-modal-body modalprofil center">
                                 <button class="uk-modal-close-default" type="button" uk-close></button>
+                                <div class="uk-width-auto">
+                                    <img class="uk-border-circle" width="65" height="65" src="{{ app.user.profilepicpath }}">
+                                </div>
                           <ul class="uk-nav uk-navbar-dropdown-nav">
                             <li class="uk-active"><p>{{ app.user.forename }} {{ app.user.name }}</p></li>                             
                             <li class="uk-nav-divider"></li>
                                 <li><a uk-icon="icon:  lifesaver" href="{{ path('help') }}">Besoin d'aide ? </a></li>
                             <li class="uk-nav-divider"></li>
-                                <li><a uk-icon="icon: file-edit" href="#">Modifier le profil </a></li>
-
+                                <li><a uk-icon="icon: file-edit" href="{{ path('edituser') }}">Modifier le profil </a></li>
+                                {# <li><a class="uk-button uk-button-default" onclick ="ToggleTheme()" href="#">Activer/désactiver le thème</a></li>       #}
                                 <li class="uk-nav-divider"></li>
                                 <li></a> <a uk-icon="icon: sign-out" href="{{ path('app_logout') }}">Se déconnecter </a></li>     
-                            </ul>
-                            </li>       
-                                <br>
-                      
+                                </ul>
                                 </div>
                             </div> 
-
-
-
-
-
-
-
-
                     </li>
                 </ul>
             </div>
@@ -76,6 +68,7 @@
                 </form>
             </div>
         </li>
+        <span  class="uk-label uk-label-success labelstate">Bêta 0.1.3</span>
     </ul>
 </div>
 </div>
@@ -90,6 +83,12 @@
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit-icons.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+        function ToggleTheme(){
+        var element = document.getElementById("background");
+        element.classList.toggle("theme");
+        }
+        </script>
         {% endblock %}
     
     </body>

@@ -90,6 +90,16 @@ class User implements UserInterface
      */
     private $follow;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Task::class, mappedBy="user")
+     */
+    private $attrtask;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $profilepicpath;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
@@ -97,6 +107,7 @@ class User implements UserInterface
         $this->types = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->follow = new ArrayCollection();
+        $this->attrtask = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -367,5 +378,44 @@ class User implements UserInterface
         return $this->createQueryBuilder('user')
             ->andWhere('user.isScientist = :isScientist')
             ->setParameter('isScientist', true);
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getAttrtask(): Collection
+    {
+        return $this->attrtask;
+    }
+
+    public function addAttrtask(Task $attrtask): self
+    {
+        if (!$this->attrtask->contains($attrtask)) {
+            $this->attrtask[] = $attrtask;
+            $attrtask->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttrtask(Task $attrtask): self
+    {
+        if ($this->attrtask->removeElement($attrtask)) {
+            $attrtask->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getProfilepicpath(): ?string
+    {
+        return $this->profilepicpath;
+    }
+
+    public function setProfilepicpath(?string $profilepicpath): self
+    {
+        $this->profilepicpath = $profilepicpath;
+
+        return $this;
     }
 }

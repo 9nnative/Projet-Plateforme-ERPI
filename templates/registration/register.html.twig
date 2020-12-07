@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Rejoindre la plateforme{% endblock %}
 
 {% block body %}
     {% for flashError in app.flashes('verify_email_error') %}
@@ -9,7 +9,23 @@
 
     
 <section class="main">
-    <h1 class="center">Rejoindre la plateforme</h1>
+<br>
+    {% if app.user %}
+
+        <div uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <h3>Voulez-vous vous déconnecter ?</h3>
+    <div class="mb-3">
+            Il semble que vous êtes déjà connecté avec l'adresse {{ app.user.username }}. Déconnectez-vous de votre compte actuel si vous souhaitez en créer un autre. <a href="{{ path('app_logout') }}">Se déconnecter</a>
+        </div>
+</div>
+    {% endif %}
+
+    {% if not app.user %}
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body cardlogin">
+            <h3 class="uk-card-title center">Rejoindre la plateforme</h3>
+            <p></p>
+    <h1 class="center"></h1>
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.name, { 'label': 'Nom' }) }}
         {{ form_row(registrationForm.forename, { 'label': 'Prénom' }) }}
@@ -17,11 +33,20 @@
         {{ form_row(registrationForm.email, { 'label': 'E-mail' }) }}
         {{ form_row(registrationForm.plainPassword, {
             label: 'Mot de passe'
-            
         }) }}
+                    <div uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <h3>Conditions d'utilisation</h3>
+    <div class="mb-3">
+            En vous inscrivant, vous acceptez les <a href="{{ path('app_logout') }}">conditions d'utilisation</a> du site.
+        </div>
+</div>
         <div class="uk-margin center">
        <button type="submit" class="btn uk-button uk-button-default center">S'inscrire</button>
     </div>
+
+    </div>
     {{ form_end(registrationForm) }}
+    {% endif %}
 </section>
 {% endblock %}

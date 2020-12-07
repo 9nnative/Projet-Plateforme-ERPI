@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\Files;
 use App\Entity\State;
 use App\Form\TaskType;
+use App\Form\UserType;
 use App\Entity\Comment;
 use App\Entity\Project;
 use App\Form\FilesType;
@@ -22,9 +23,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class MainController extends AbstractController
 {
@@ -99,9 +102,40 @@ class MainController extends AbstractController
     }
 
     /**
+     * @Route("/edituser", name="edituser")
+     */
+    public function editUser(AuthenticationUtils $authenticationUtils, EntityManagerInterface $em, Request $request)
+    {
+
+        $currentuser = $this->getUser();
+        $forme = $this->createForm(UserType::class, $currentuser);
+        $forme->handleRequest($request);
+
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        if($forme->isSubmitted() && $forme->isValid())
+        {
+
+              
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($currentuser);
+            $entityManager->flush();
+            $this->addFlash('success', 'Les modifications ont bien été enregistrées');
+
+        }
+        return $this->render('user/editUser.html.twig', [
+            'formUser' => $forme->createView(),
+            'last_username' => $lastUsername, 
+            'error' => $error
+        ]);
+    }
+
+    /**
      * @Route("/task/{id}", name="task_details")
      */
-    public function showTask(Task $task = null)
+    public function showTask(Project $project = null, Task $task = null, UserInterface $user, EntityManagerInterface $em, Request $request)
     {
         if(!$task) // si la tâche n'existe pas on route vers sessions et on affiche une erreur
         {
@@ -109,9 +143,15 @@ class MainController extends AbstractController
             return $this->redirectToRoute('allprojects');
         }
 
+
+       $users = $task->getUser();
+
+
+
         return $this->render('tasks/detailTask.html.twig', [
             'task' => $task,
-            'editMode' => $task->getId() !==null
+            'users' => $users,
+            'editMode' => $task->getId() !==null,
         ]);
 
     }
@@ -131,12 +171,12 @@ class MainController extends AbstractController
             return $this->redirectToRoute('allprojects');
         }
 
-        $task = $this->getDoctrine()
-        ->getRepository(Task::class)
-        ->findByProject($project);
-
         $allproducts = $this->getDoctrine()
         ->getRepository(Files::class)
+        ->findByProject($project);
+
+        $task = $this->getDoctrine()
+        ->getRepository(Task::class)
         ->findByProject($project);
 
         $prjfollowed = $project->getUsers();
@@ -237,38 +277,12 @@ class MainController extends AbstractController
             return $this->redirectToRoute('allprojects');
         }
 
-        $userq = new User;
-        // $user2projectform->getUsers();
-        $formu = $this->createForm(FollowType::class, $project);
-        $formu->handleRequest($request);
 
-
-        if($formu->isSubmitted() && $formu->isValid())
-        {
-
-                foreach($formu->getData() as $userq)// pour chaque user on ajoute le user au projet
-                {
-            
-                    $userq->addFollow($project);
-                    
-
-                    
-                }
-
-                
-
-                header("Refresh:0");
-                
-                // return $this->redirectToRoute('project_details', ['id' => $project->getId()] );
-                $this->addFlash('success', 'Les utilisateurs ont correctement été ajoutés au projet.');
-
-        }
 
         return $this->render('projects/detailProject.html.twig', [
             'formComment' => $form->createView(),
             'formTask' => $formt->createView(),
             'formFile' => $formf->createView(),
-            'formAddUsers' => $formu->createView(),
             'task' => $task,
             'allproducts' => $allproducts,
             'project' => $project,
@@ -326,17 +340,28 @@ class MainController extends AbstractController
     /**
      * @Route("/dashboard", name="dashboard")
      */
-    public function dashboard()
+    public function dashboard(Project $project = null, Task $task = null)
     {
         $prjfollowed = $this->getUser()->getFollow();
+
+        $taskself = $this->getUser()->getTasks();
+
+        $taskattr = $this->getUser()->getAttrtask();
 
         $project = $this->getDoctrine()
         ->getRepository(Project::class)
         ->findAll();
 
+        $tasks = $this->getDoctrine()
+        ->getRepository(Task::class)
+        ->findAll();
+
         return $this->render('main/dashboard.html.twig', [
             'prjfollowed' => $prjfollowed,
             'project' => $project,
+            'taskself' => $taskself,
+            'taskattr' => $taskattr,
+            'tasks' => $tasks,
         ]);
     }
 
@@ -392,6 +417,7 @@ class MainController extends AbstractController
         // }
         // return $this->redirectToRoute('project_details', ['id' => $project->getId()] );
     }
+
 
 
 

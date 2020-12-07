@@ -1,14 +1,27 @@
 .main{
-    margin-left: 15%;
+    margin-left: 20%;
     margin-right: 15%;
     margin-top: 1rem; 
 }
-
+.relative{
+    position: relative !important;
+    top: 40px !important; left: 40px;
+}
+.theme{
+    height: 70rem;
+    background: #005AA7;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #FFFDE4, #005AA7);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #FFFDE4, #005AA7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
 .center{
     text-align: center;
-    margin-top: 20px;
+
 }
 
+.centerlogin{
+    text-align: center;
+    margin-top: -20px;
+}
 .modalprofil{
     width: 15rem !important;
 }
@@ -39,9 +52,17 @@
 #commentbutton{
     margin-bottom: 5rem;
 }
+.cardlogin{
+    margin-left: 20%;
+    margin-right: 20%;
 
+}
+body{
+
+}
 .uk-countdown{
-    margin-left : 10%;
+    margin-left : 22%;
+    margin-right : 22%;
 }
 input[type=file]::-webkit-file-upload-button {
     border: 1px solid grey;

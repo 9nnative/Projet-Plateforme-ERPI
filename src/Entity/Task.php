@@ -76,9 +76,20 @@ class Task
      */
     private $state;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="attrtask")
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $progress;
+
     public function __construct()
     {
         $this->files = new ArrayCollection();
+        $this->user = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -232,6 +243,42 @@ class Task
     public function setState(?State $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->user->contains($user)) {
+            $this->user[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->user->removeElement($user);
+
+        return $this;
+    }
+
+    public function getProgress(): ?int
+    {
+        return $this->progress;
+    }
+
+    public function setProgress(?int $progress): self
+    {
+        $this->progress = $progress;
 
         return $this;
     }

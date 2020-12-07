@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20201125184443 extends AbstractMigration
+final class Version20201207032135 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -20,12 +20,16 @@ final class Version20201125184443 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE state (id INT AUTO_INCREMENT NOT NULL, green TINYINT(1) NOT NULL, orange TINYINT(1) NOT NULL, red TINYINT(1) NOT NULL, none TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE project ADD progress INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649C54C8C93 FOREIGN KEY (type_id) REFERENCES type (id)');
+        $this->addSql('CREATE INDEX IDX_8D93D649C54C8C93 ON user (type_id)');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE state');
+        $this->addSql('ALTER TABLE project DROP progress');
+        $this->addSql('ALTER TABLE `user` DROP FOREIGN KEY FK_8D93D649C54C8C93');
+        $this->addSql('DROP INDEX IDX_8D93D649C54C8C93 ON `user`');
     }
 }
