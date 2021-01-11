@@ -23,15 +23,15 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('forename', TextType::class, [
-                'attr' => ['class' => 'uk-input']
+                'attr' => ['class' => 'form-control uk-input']
             ])
             ->add('name', TextType::class, [
-                'attr' => ['class' => 'uk-input'] 
+                'attr' => ['class' => 'form-control uk-input'] 
             ])
             ->add('type', EntityType::class, [
                 // looks for choices from this entity
                 'class' => Type::class,
-                'attr' => ['class' => 'uk-select'],
+                'attr' => ['class' => 'form-control uk-select'],
                 // uses the User.username property as the visible option string
                 'choice_label' => 'name',
                 // used to render a select box, check boxes or radios
@@ -39,7 +39,7 @@ class RegistrationFormType extends AbstractType
                 // 'expanded' => true,
             ])
             ->add('email', EmailType::class, [
-                'attr' => ['class' => 'uk-input']
+                'attr' => ['class' => 'form-control uk-input']
             ])
             ->add('plainPassword', RepeatedType::class, [
                 // instead of being set onto the object directly,
@@ -47,7 +47,7 @@ class RegistrationFormType extends AbstractType
                 'type' => PasswordType::class,
                 'first_options'  => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmation du mot de passe'],
-                'options' => ['attr' => ['class' => 'password-field uk-input']],
+                'options' => ['attr' => ['class' => 'password-field form-control uk-input']],
                 'required' => true,
                 'mapped' => false,
                 'constraints' => [

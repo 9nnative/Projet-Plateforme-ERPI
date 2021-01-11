@@ -9,6 +9,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 
@@ -29,10 +31,13 @@ class TaskType extends AbstractType
             ->add('date_end', DateType::class, [
                 'widget' => 'single_text',
             ])
-            ->add('financial_details', TextType::class, [
-                'attr' => ['class' => 'uk-input'] 
+            ->add('financial_details', MoneyType::class, [
+                'divisor' => 100,
+                'required' => false,
             ])
             ->add('is_private')
+            
+            ->add('progress', RangeType::class)
             // ->add('project', EntityType::class, [
             //     // looks for choices from this entity
             //     'class' => Project::class,

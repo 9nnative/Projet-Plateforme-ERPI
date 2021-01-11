@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Project
 {
+    private static $states = array(
+        "1" => "done", "2" =>  "inprogress", "3" =>  "cancelled", "4" => "none"
+    );
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -56,7 +59,7 @@ class Project
     private $is_private;
 
     /**
-     * @ORM\Column(type="string", length=3000)
+     * @ORM\Column(type="text", length=15000)
      */
     private $content;
 
@@ -92,7 +95,7 @@ class Project
     private $users;
 
     /**
-     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="projects")
+     * @ORM\Column(type="integer")
      */
     private $state;
 
@@ -371,12 +374,12 @@ class Project
         return $this;
     }
 
-    public function getState(): ?State
+    public function getState(): string
     {
-        return $this->state;
+        return self::$states[$this->state];
     }
 
-    public function setState(?State $state): self
+    public function setState(int $state): self
     {
         $this->state = $state;
 

@@ -100,6 +100,37 @@ class User implements UserInterface
      */
     private $profilepicpath;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Profilepics::class, inversedBy="user")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $profilepics;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sent_by")
+     */
+    private $messages;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sent_to")
+     */
+    private $sent_message;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Conversation::class, mappedBy="owner_id")
+     */
+    private $conversations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Conversation::class, mappedBy="recipient")
+     */
+    private $conversationsbis;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="sent_by")
+     */
+    private $tickets;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
@@ -108,6 +139,11 @@ class User implements UserInterface
         $this->comments = new ArrayCollection();
         $this->follow = new ArrayCollection();
         $this->attrtask = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->content = new ArrayCollection();
+        $this->conversations = new ArrayCollection();
+        $this->conversationsbis = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -415,6 +451,168 @@ class User implements UserInterface
     public function setProfilepicpath(?string $profilepicpath): self
     {
         $this->profilepicpath = $profilepicpath;
+
+        return $this;
+    }
+
+    public function getProfilepics(): ?Profilepics
+    {
+        return $this->profilepics;
+    }
+
+    public function setProfilepics(?Profilepics $profilepics): self
+    {
+        $this->profilepics = $profilepics;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setSentBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getSentBy() === $this) {
+                $message->setSentBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getSentMessage(): Collection
+    {
+        return $this->sent_message;
+    }
+
+    public function addSentMessage(Message $content): self
+    {
+        if (!$this->sent_message->contains($sent_message)) {
+            $this->sent_message[] = $sent_message;
+            $sent_message->setSentTo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSentMessage(Message $sent_message): self
+    {
+        if ($this->sent_message->removeElement($sent_message)) {
+            // set the owning side to null (unless already changed)
+            if ($sent_message->getSentTo() === $this) {
+                $sent_message->setSentTo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conversation[]
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversation $conversation): self
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations[] = $conversation;
+            $conversation->setOwnerId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversation $conversation): self
+    {
+        if ($this->conversations->removeElement($conversation)) {
+            // set the owning side to null (unless already changed)
+            if ($conversation->getOwnerId() === $this) {
+                $conversation->setOwnerId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conversation[]
+     */
+    public function getConversationsbis(): Collection
+    {
+        return $this->conversationsbis;
+    }
+
+    public function addConversationsbi(Conversation $conversationsbi): self
+    {
+        if (!$this->conversationsbis->contains($conversationsbi)) {
+            $this->conversationsbis[] = $conversationsbi;
+            $conversationsbi->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversationsbi(Conversation $conversationsbi): self
+    {
+        if ($this->conversationsbis->removeElement($conversationsbi)) {
+            // set the owning side to null (unless already changed)
+            if ($conversationsbi->getRecipient() === $this) {
+                $conversationsbi->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ticket[]
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): self
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets[] = $ticket;
+            $ticket->setSentBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): self
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getSentBy() === $this) {
+                $ticket->setSentBy(null);
+            }
+        }
 
         return $this;
     }

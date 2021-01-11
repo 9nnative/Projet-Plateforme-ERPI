@@ -1,11 +1,42 @@
-.main{
-    margin-left: 20%;
-    margin-right: 15%;
+.global{
+    margin-left: 20rem !important;
+    margin-right: 5% !important;
     margin-top: 1rem; 
 }
 .relative{
     position: relative !important;
     top: 40px !important; left: 40px;
+}
+
+.ui.comments{
+    max-width : 700px!important;
+}
+.mobile{
+    display : none !important;
+}
+.iconmessage{
+   position: relative !important;
+    margin-left: 93% !important;
+}
+.sizeimg{
+    width : 100px !important;
+    height : 100px !important;
+}
+.nomargin{
+    margin-top : 1em !important;
+    margin-bottom : 0!important;
+    margin-left : 1em !important;
+    margin-right : 1em !important;
+}
+.loginsize{
+    width : 60em !important;
+    margin-left: 20% !important;
+}
+.scrollbar{
+    max-height: 30em !important;
+    overflow-y: scroll !important;
+    scrollbar-color: rebeccapurple green !important;
+    scrollbar-width: thin !important;
 }
 .theme{
     height: 70rem;
@@ -15,6 +46,9 @@
 }
 .center{
     text-align: center;
+}
+.height100{
+    height: 100% !important
 
 }
 
@@ -33,50 +67,132 @@
     margin-left: 33%;
 }
 
-/* .labelstate{
-    position: absolute !important;
-    left: 80% !important;
-} */
-
 .navbar{
     margin-top : 1rem !important;
     margin-left : 1rem !important;
 }
-
+.transparent{
+    background-color :rgba(255, 255, 255, 0) !important;
+    border : none !important;
+}
 #project_content{
     height : 500px;
 }
 #comment_content{
-    height: 200%;
+    height: 7rem;
 }
 #commentbutton{
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
 }
 .cardlogin{
     margin-left: 20%;
     margin-right: 20%;
 
 }
-body{
 
+.uk-button{
+    border-radius:4px !important;
+}
+.uk-card{
+    border-radius:4px !important;
+}
+body{
+    font-family: 'Montserrat', sans-serif !important;
+    background: #005AA7;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #FFFDE4, #005AA7);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #FFFDE4, #005AA7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .uk-countdown{
     margin-left : 22%;
     margin-right : 22%;
 }
-input[type=file]::-webkit-file-upload-button {
-    border: 1px solid grey;
-    background: #FFFAAA;
-    display:none;
-  }
 
-  @media screen and (max-width: 800px) { 
-    .prj{
-        margin-left: 0%;
-        margin-right: 5%;
-        width: 80%;
+
+
+  @import url('https://fonts.googleapis.com/css?family=Montserrat:900i&display=swap');
+
+.spantitle{
+position: absolute !important;
+top: 11% !important;
+left: 52% !important;
+transform: translate(-50%, -50%) !important;
+font-size:80px !important;
+    letter-spacing:0.1em !important;
+-webkit-text-fill-color: transparent !important;
+-webkit-text-stroke-width: 1.5px !important;
+-webkit-text-stroke-color: white !important;
+text-shadow: 
+                        8px 8px #32D296,
+                        14px 14px #000000!important;
+}
+.spanmenu{
+    position: absolute !important;
+    top: 9% !important;
+    left: 52% !important;
+    transform: translate(-50%, -50%) !important;
+    font-size:80px !important;
+        letter-spacing:0.1em !important;
+    -webkit-text-fill-color: transparent !important;
+    -webkit-text-stroke-width: 1.5px !important;
+    -webkit-text-stroke-color: white !important;
+    text-shadow: 
+                            8px 8px#035CA8,
+                            14px 14px #000000!important;
     }
-    .uk-countdown{
-        margin-left : 0%;
-    }
+
+.blue{
+    background-color: #035CA8 !important;
+}
+
+.mobilenav{
+    display : none !important;
+}
+.modalmobilenav{
+    display : none !important;
+}
+.noround{
+    border-radius:0px !important;
+    background-color :rgba(255, 255, 255, 0);
+    
+}
+  @media screen and (max-width: 600px) {
+
   } 
+/* Sur les écrans, quand la largeur de la fenêtre fait au maximum 1280px */
+/* @media screen and (max-width: 1280px) */
+
+/* Sur tous types d'écran, quand la largeur de la fenêtre est comprise entre 1024px et 1280px */
+/* @media all and (min-width: 1024px) and (max-width: 1280px) */
+
+/* Sur les téléviseurs */
+
+
+/* Sur tous types d'écrans orientés verticalement */
+@media all and (orientation: portrait){
+
+.mobilenav{
+    display : block !important;
+}
+.global{
+    margin-left: 1em !important;
+}
+.navbarpc{
+    display : none !important;
+}
+.uk-card{
+    width: 100% !important;
+}
+.cardlogin{
+    margin: 0px !important;
+}
+.uk-breadcrumb{
+    display: none;
+}
+.prj{
+    margin-left: 0%;
+    width: 100% !important;
+}
+.desktop{
+    display: none !important;
+}
+}

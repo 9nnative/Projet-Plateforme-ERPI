@@ -3,30 +3,54 @@
 {% block title %}Aide - Plateforme ERPI{% endblock %}
 
 {% block body %}
-<section class="main">
+<section class="global">
 
                 <ul class="uk-breadcrumb">
                     <li><a href="{{ path('main') }}">Acceuil</a></li>
-                    <li><a href="#">Aide</a></li>
+                    <li><b><a href="{{ path('help') }}">Aide</a></b></li>
                 </ul>
                 
 <h1 class="center">Besoin d'aide ?</h1>
+<br>
+<div class="uk-child-width-expand@s" uk-grid>
 
-<dl class="uk-description-list">
-<div class="uk-card uk-card-default uk-card-hover uk-card-body">
-    <dt>Éditeur de texte</dt>
-    <dd>Je souhaite me renseigner sur les possibilités que m'offre l'éditeur de textes. <a>Voir plus ...</a></dd>
+    <div>
+    <a href="{{ path('addticket') }}" class="uk-display-block uk-card uk-card-body uk-card-default uk-link-toggle uk-width-medium">
+        <h3><span class="uk-link-heading">Je souhaite rapporter un bug</span> <i class="bug icon"></i></h3>
+        <p>En cas de bug ou non-fonctionnement de l'application, veuillez créér un ticket via l'interface de création de tickets.</p>
+        <p class="uk-text-meta">Chaque ticket créé aidera au bon développement du site !</p>
+    </a>
+    </div>
+
+    <div>
+    <a href="" class="uk-display-block uk-card uk-card-body uk-card-default uk-link-toggle uk-width-medium">
+        <h3><span class="uk-link-heading">Éditeur de texte <i class="font icon"></i></h3>
+        <p>Je souhaite me renseigner sur les possibilités que m'offre l'éditeur de textes.</p>
+        <p class="uk-text-meta">Documentation</p>
+    </a>
+    </div>
+
+    <div>
+        {# <h4>Primary</h4>
+        <ul class="uk-list uk-list-disc uk-list-primary">
+            <li>List item 1</li>
+            <li>List item 2</li>
+            <li>List item 3</li>
+        </ul> #}
+    </div>
+
+    <div>
+        {# <h4>Secondary</h4>
+        <ul class="uk-list uk-list-disc uk-list-secondary">
+            <li>List item 1</li>
+            <li>List item 2</li>
+            <li>List item 3</li>
+        </ul> #}
+    </div>
 </div>
-<br>
-<div class="uk-card uk-card-default uk-card-hover uk-card-body">
-    <dt>Je souhaite ajouter un document PDF à un projet</dt>
-    <dd>Il est bien évidemment possible de lier un document PDF à votre projet. <a>Voir plus ...</a></dd>
-</div>
-<br>
-<div class="uk-card uk-card-default uk-card-hover uk-card-body">
-    <dt>Je souhaite rapporter un bug</dt>
-    <dd>En cas de bug ou non-fonctionnement de l'application, veuillez contacter <a>9nnative@gmail.com<a>.</dd>
-</div>
+
+
+
 </div>
 </section>
 {% endblock %}

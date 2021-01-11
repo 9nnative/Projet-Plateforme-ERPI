@@ -3,11 +3,8 @@
 {% block title %}Édition du profil - Plateforme ERPI{% endblock %}
 
 {% block body %}
-<section class="main">
-<br>
 
-<div class="uk-card uk-card-default uk-card-hover uk-card-body centerlogin cardlogin">
- {{ form_start(formUser) }}
+<section class="global">
          {% for label, messages in app.flashes %}
             <div class="uk-alert-primary" uk-alert>
                 {% for message in messages %}
@@ -15,8 +12,18 @@
                         {{ message }}
                     </div>
                 {% endfor %}
-                {% endfor %}
                 </div>
+                {% endfor %}
+                                <ul class="uk-breadcrumb">
+                    <li><a href="#">Mon profil</a></li>
+                    <li><b><a href="{{ path('edituser') }}">Édition du profil</a></b></li>
+                </ul>
+<br>
+
+<div class="uk-card uk-card-default uk-card-hover uk-card-body centerlogin cardlogin">
+ {{ form_start(formUser) }}
+
+               
             <h3 class="uk-card-title">Édition du profil</h3>
 
             <br>
@@ -49,30 +56,66 @@
     </div>
     <br>
         {{ form_row(formUser.bio, { 'label': 'Votre bio' }) }}
+                            <div class="uk-margin center">
+       <button type="submit" class="btn uk-button uk-button-default center">Sauvegarder</button>
+    </div>
     </li>
+
     
     <li>
         <a class="uk-accordion-title" href="#">Identifiant de connexion</a>
         <div class="uk-accordion-content">
             {{ form_row(formUser.email, { 'label': 'E-mail' }) }}
+                            <div class="uk-margin center">
+       <button type="submit" class="btn uk-button uk-button-default center">Sauvegarder</button>
+    </div>
         </div>
+
     </li>
+
     <li>
         <a class="uk-accordion-title" href="#">Ajouter ou modifier une photo de profil</a>
-        <div class="uk-accordion-content">
-            <p>Fonctionnalitée à venir <a>voir les notes de patch</a></p>
-        </div>
-    </li>
-</ul>
+
+        <div class="uk-accordion-content uk-open">
+            
+        <br>
+             
 
 
         {# {{ form_row(formUser.type, { 'label': 'Vous êtes ...' }) }} #}
         <br>
+            <div class="uk-margin center">
+    </div>
+    <div class="uk-position-relative uk-invisible-toggle " id="icones" tabindex="-1" uk-slideshow>
+             <ul class="uk-slideshow-items">
+            {% for allprofilepics in allprofilepics %}
+                    <li>
+            <img data-src="{{ allprofilepics.path }}" class ="sizeimg" width="200" height="200" alt="Photos de profil" uk-cover uk-img="target: !ul > :last-child, !* +*">
+               <div class="uk-overlay uk-overlay uk-position-bottom uk-text-center">
+                <h3 class="uk-margin-remove">{{ allprofilepics.name }}</h3>
+            </div>
+                    </li>
+
+            {% endfor %}
+           
+            </ul>
+              <a class="uk-position-center-left uk-position-small black" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+    <a class="uk-position-center-right uk-position-small black" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+
+            </div>
+{{ form_row(formUser.profilepics, { 'label': 'Choisir une icône :' }) }}
     <div class="uk-margin center">
        <button type="submit" class="btn uk-button uk-button-default center">Sauvegarder</button>
     </div>
- {{ form_end(formUser) }}
+        </div>
+
+    </li>
+    
+</ul>
 
 </div>
+ {{ form_end(formUser) }}
+
+
 </section>
 {% endblock %}

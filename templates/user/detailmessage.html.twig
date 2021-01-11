@@ -1,0 +1,78 @@
+{% extends 'base.html.twig'%}
+
+{% block title %}Conversation - Plateforme ERPI{% endblock %}
+
+{% block body %}
+
+<section class="global">
+         {% for label, messages in app.flashes %}
+            <div class="uk-alert-primary" uk-alert>
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                </div>
+                {% endfor %}
+                                                <ul class="uk-breadcrumb">
+                    <li><a href="#">Mon profil</a></li>
+                    <li><a href="{{ path('allmessages') }}">Mes conversations</a></li>
+                    <li><b><a href="#">{{ conversation.owner.forename }} {{ conversation.owner.name }}</a></b></li>
+                </ul>
+            
+            <div class ="height100">
+        <div class="uk-card uk-card-default uk-width-1-2 uk-card-small uk-card-hover uk-card-body">
+       
+        {% if conversation.owner.id == app.user.id %}
+        <h3 class="uk-card-title">Conversation avec : {{ conversation.recipient.forename }} {{ conversation.recipient.name }}</h3>
+        {% else %}
+        <h3 class="uk-card-title">Conversation avec : {{ conversation.owner.forename }} {{ conversation.owner.name }}</h3>
+        {% endif %}
+        
+        </div>
+        
+ <div class="uk-card uk-card-default uk-width-1-2 uk-card-small uk-card-hover uk-card-body scrollbar">
+
+
+<dl class="uk-description-list">
+<dd></dd>
+{% for messages in messages %}
+ {% if app.user != messages.sentby %}
+ <dt><h4 class="nomargin"><span class="uk-label">{{ messages.sentby.forename }}</span></h4></dt>
+      <dd>{{ messages.content }}</dd>
+        <dd class="uk-text-italic uk-text-meta">{{ messages.sentat|format_datetime('long', 'short', locale='fr')  }}</dd>
+    </dl>    
+
+
+
+
+   {% else %}
+ <dt class="uk-text-right"><h4 class="nomargin"><span class="uk-label uk-label-success">Moi</span></h4></dt>
+      <dd class="uk-text-right">{{ messages.content|raw  }}</dd>
+       <dd class="uk-text-right uk-text-italic uk-text-meta">{{ messages.sentat|format_datetime('long', 'short', locale='fr') }} <a href="{{ path('remove_message', {'id':messages.id}) }} }}"uk-tooltip ="title:Supprimer"uk-icon="trash"></a></dd>
+    </dl>  
+
+    {% endif %}
+   {% endfor %}
+
+
+
+    <br>
+    
+    </div>
+    <div class="uk-card uk-card-default uk-width-1-2 uk-card-small uk-card-hover uk-card-body">
+    
+{{ form_start(formMessage) }}
+
+     {{ form_row(formMessage.content, { 'label': 'Votre message :' }) }} 
+                 <div class="center">
+                 <br>
+       <button type="submit" class="btn uk-button uk-button-default center">Envoyer</button>
+
+{{ form_end(formMessage) }}
+ </div>
+
+    </ul>
+
+</section>
+{% endblock %}

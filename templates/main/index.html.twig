@@ -1,30 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Acceuil - Plateforme ERPI{% endblock %}
+{% block title %}Accueil - Plateforme ERPI{% endblock %}
 
 {% block body %}
-<section class="main">
+<section class="global">
+<h2 class="ui center aligned icon header">
+  <i class="home icon"></i>
+  <div class="content">
+    Acceuil
+    <div class="sub header">Plateforme de gestion ERPI</div>
+  </div>
+</h2>
 <br>
-<h1 class="center">Bienvenue sur l'acceuil de la plateforme</h1>
-<h2 class="center">vous souhaitez ...</h2><br>
 
+
+<div uk-scrollspy="target: > div; cls: uk-animation-fade; delay: 100">
 <div class="uk-child-width-1-2@s" uk-grid>
     <div>
-        <div class="uk-light uk-background-secondary uk-padding">
-            <h3>Créer un nouveau projet</h3>
+        <div class="uk-card uk-card-hover uk-light blue uk-padding">
+            <h3><span uk-icon="plus-circle"></span> Créer un nouveau projet</h3>
             <p>Créez un projet, affectez-y des mots clés et ajoutez-y des collaborateurs.<br>  Il sera possible de le modifier par la suite.</p>
             <a href ="{{ path('project_add') }}" class="uk-button uk-button-default">Je créé mon projet</a>
         </div>
     </div>
     <div>
-        <div class="uk-dark uk-background-muted uk-padding">
-            <h3>Accéder à mon espace</h3>
+        <div class="uk-card uk-card-hover uk-dark uk-background-muted uk-padding">
+            <h3><span uk-icon="thumbnails"></span> Accéder à mon espace</h3>
             <p>Accédez à votre espace personnel, avec suivi des projets et tâches auxquelles vous avez été affectées.</p>
             <a href ="{{ path('dashboard') }}" class="uk-button uk-button-default">Mon dashboard</a>
         </div>
     </div>
+        <div>
+        <div class="uk-card uk-card-hover uk-dark uk-background-muted uk-padding">
+            <h3><span uk-icon="file-text"></span> Ajouter un ticket</h3>
+            <p>Ce site est en constante construction. Reportez un bug, ou faites une suggestion, cela aidera au développement de celui-ci.</p>
+            <a href ="{{ path('addticket') }}" class="uk-button uk-button-default">Créer un ticket</a>
+        </div>
+    </div>
 </div>
-
+</div>
 
 </section>
 {% endblock %}

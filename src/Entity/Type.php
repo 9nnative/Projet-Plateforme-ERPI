@@ -87,4 +87,12 @@ class Type
         return $this;
     }
 
+    /**
+     * @return Collection|User[]
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
 }

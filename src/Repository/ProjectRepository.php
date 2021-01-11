@@ -47,11 +47,11 @@ class ProjectRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function search($title) {
-        return $this->createQueryBuilder('Projet')
-            ->andWhere('Projet.title LIKE :title')
-            ->setParameter('title', '%'.$title.'%')
-            ->getQuery()
-            ->execute();
-    }
+    // public function search($title) {
+    //     return $this->createQueryBuilder('Projet')
+    //         ->andWhere('Projet.title LIKE :title')
+    //         ->setParameter('title', '%'.$title.'%')
+    //         ->getQuery()
+    //         ->execute();
+    // }
 }

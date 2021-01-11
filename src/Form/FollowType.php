@@ -19,8 +19,8 @@ class FollowType extends AbstractType
     {
         $builder
         ->add('users', EntityType::class, [
-            'attr' => ['class' => 'uk-select'],
-            'multiple' => true,
+            'attr' => ['class' => 'ui fluid selection dropdown'],
+            // 'multiple' => true,
             'choice_label' =>'name',
             // 'expanded' => true,
             'class' => User::class,
@@ -36,7 +36,7 @@ class FollowType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-             'data_class' => User::class,
+             'data_class' => null,
         ]);
     }
 }

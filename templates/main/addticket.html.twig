@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Aide - Plateforme ERPI{% endblock %}
+
+{% block body %}
+<section class="global">
+
+                <ul class="uk-breadcrumb">
+                    <li><a href="{{ path('main') }}">Acceuil</a></li>
+                    <li><a href="{{ path('help') }}">Aide</a></li>
+                    <li><b><a href="#">Créer un ticket</a></b></li>
+                </ul>
+        {% for label, messages in app.flashes %}
+            <div class="uk-alert-primary" uk-alert>
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+{# En cas de maintenance #}
+
+{# <div class="ui icon orange message"> 
+  <i class="cogs icon"></i>
+  <div class="content">
+    <div class="header">
+      Oups!
+    </div>
+    <p>Cette page est en maintenance. Cela ne durera pas longtemps, promis !</p>
+  </div>
+</div> #}
+
+<div class="ui icon green message">
+  <i class="clock outline icon"></i>
+  <div class="content">
+    <div class="header">
+      Délais de traitement
+    </div>
+    <p>Le délais de traitement moyen d'un ticket est d'environ 5 jours.</p>
+    <p>Soyez le plus clair possible dans l'explication du problème / de la demande.</p>
+  </div>
+</div>
+
+<div class="uk-card uk-card-default uk-card-body">
+<h1 class="center">Créer un ticket</h1>
+
+ {{ form_start(formTicket) }}
+    {{ form_row(formTicket.content, { 'label': 'Votre message :' }) }}
+        <div class="uk-margin center">
+       <button type="submit" class="btn uk-button uk-button-default center">Envoyer</button>
+    </div>
+    
+ {{ form_end(formTicket)}}
+
+ </div>
+</section>
+{% endblock %}

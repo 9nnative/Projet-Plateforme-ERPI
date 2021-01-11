@@ -1,3 +1,3 @@
 framework:
     mailer:
-        dsn: '%env(MAILER_DSN)%'
+        dsn: '%env(5ef07d283e9b47b3d28cba60464accbc)%'

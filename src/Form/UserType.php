@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Type;
 use App\Entity\User;
+use App\Entity\Profilepics;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -53,7 +54,16 @@ class UserType extends AbstractType
                 // 'multiple' => true,
                 // 'expanded' => true,
             ])
-            // ->add('follow')
+            ->add('profilepics', EntityType::class, [
+                // looks for choices from this entity
+                'class' => Profilepics::class,
+                'attr' => ['class' => 'uk-select'],
+                // uses the User.username property as the visible option string
+                'choice_label' => 'name',
+                // used to render a select box, check boxes or radios
+                // 'multiple' => true,
+                // 'expanded' => true,
+            ])
             // ->add('attrtask')
         ;
     }

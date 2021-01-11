@@ -1,10 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer une tâche - Plateforme ERPI{% endblock %}
+{% block title %}Modifier une tâche - Plateforme ERPI{% endblock %}
 
 {% block body %}
-<section class="main">
+<section class="global">
 
+                <ul class="uk-breadcrumb">
+                    <li><a href="{{ path('main') }}">Acceuil</a></li>
+                    <li><a href="{{ path('dashboard') }}">Dashboard</a></li>
+                    <li><a href="#">Modifier une tâche</a></li>
+                </ul>
         {% for label, messages in app.flashes %}
             <div class="uk-alert-primary" uk-alert>
                 {% for message in messages %}
@@ -15,7 +20,8 @@
             </div>
         {% endfor %}
 
-    <h1 class="center">Créer une tâche</h1>
+<div class="uk-card uk-card-default uk-card-body">
+    <h1 class="center">Modifier une tâche existante</h1>
  {{ form_start(formTask) }}
     {{ form_row(formTask.title, { 'label': 'Titre de la tâche' }) }}
 
@@ -30,12 +36,15 @@
  <br>
     {{ form_row(formTask.financial_details, { 'label': 'Détails financiers' }) }}
    <br>
-    {{ form_row(formTask.project, { 'label': 'Assigner la tâche au projet :' }) }}
+    {# {{ form_row(formTask.project, { 'label': 'Assigner la tâche au projet :' }) }} #}
+   <br>
+    {{ form_row(formTask.progress, { 'label': 'Définir la progression de la tâche' }) }}
    <br>
         {{ form_row(formTask.is_private, { 'label': 'Définir en privé' }) }}
             <div class="uk-margin center">
        <button type="submit" class="btn uk-button uk-button-default center">Créer</button>
     </div>
  {{ form_end(formTask) }}
+ </div> 
 </section>
 {% endblock %}

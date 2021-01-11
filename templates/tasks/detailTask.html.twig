@@ -3,7 +3,7 @@
 {% block title %}{{ task.title }} - Plateforme ERPI{% endblock %}
 
 {% block body %}
-<section class="main">
+<section class="global">
 
         {% for label, messages in app.flashes %}
             <div class="uk-alert-primary" uk-alert>
@@ -24,21 +24,20 @@
 <div class="uk-card uk-card-default uk-card-body  cardlogin">
 <article class="uk-article">
 
-    <h1 class="uk-article-title center"><a class="uk-link-reset" href="">{{ task.title }}</a>{% if task.state == false %}
-            <span class="uk-label relative">Nouveau</span>
-            {% endif %}
-            {% if task.state.id == '1' %}
-            <span  class="uk-label uk-label-success labelstate">Terminée</span>
-            {% endif %}
-            {% if task.state.id == '2' %}
-            <span class="uk-label uk-label-warning labelstate ">En cours</span>
-            {% endif %}
-            {% if task.state.id == '3' %}
-            <span class="uk-label uk-label-danger labelstate ">Annulée</span>
-            {% endif %}
-            {% if task.state.id == '4' %}
-            <span class="uk-label labelstate"><a class="" href="" uk-tooltip="Il n'y a aucun état de défini pour cette tâche. Cliquez ici pour en définir une." uk-icon="icon: bolt"></a></span>
-            {% endif %}</h1>
+    <h1 class="uk-article-title center"><a class="uk-link-reset" href="">{{ task.title }}</a>
+                   {% if task.state == "inprogress" %}
+     <span class="uk-label uk-label-warning">En cours</span>
+     {% endif %}
+         {% if task.state == "cancelled" %}
+     <span class="uk-label uk-label-danger">Annulée</span>
+     {% endif %}
+         {% if task.state == "done" %}
+     <span class="uk-label uk-label-success">Terminée</span>
+     {% endif %}
+         {% if task.state == "none" %}
+     <span class="uk-label">Aucun état</span>
+     {% endif %}  
+            </h1>
 
 
 

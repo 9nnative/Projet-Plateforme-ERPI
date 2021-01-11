@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Task
 {
+    private static $states = array(
+        "1" => "done", "2" =>  "inprogress", "3" =>  "cancelled", "4" => "none"
+    );
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -72,7 +75,7 @@ class Task
     private $files;
 
     /**
-     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="tasks",cascade={"persist"})
+     * @ORM\Column(type="integer")
      */
     private $state;
 
@@ -235,12 +238,12 @@ class Task
         return $this;
     }
 
-    public function getState(): ?State
+    public function getState(): string
     {
-        return $this->state;
+        return self::$states[$this->state];
     }
 
-    public function setState(?State $state): self
+    public function setState(int $state): self
     {
         $this->state = $state;
 

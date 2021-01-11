@@ -8,7 +8,7 @@
     {% endfor %}
 
     
-<section class="main">
+<section class="global nomargin">
 <br>
     {% if app.user %}
 
@@ -22,13 +22,27 @@
     {% endif %}
 
     {% if not app.user %}
+<h1 class="uk-heading-large uk-text-center"><span><i class="plus square icon"></i><span></h1>
+<br>
+                <div class="uk-alert-success cardlogin uk-card" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>Déjà parmis nous ? <a href="{{ path('app_login') }}">Je me connecte !</a></p>
+</div>
         <div class="uk-card uk-card-default uk-card-hover uk-card-body cardlogin">
+
             <h3 class="uk-card-title center">Rejoindre la plateforme</h3>
             <p></p>
     <h1 class="center"></h1>
     {{ form_start(registrationForm) }}
+    <div uk-grid>
+<div class="uk-width-1-2">
         {{ form_row(registrationForm.name, { 'label': 'Nom' }) }}
+         </div>
+<div class="uk-width-1-2">
         {{ form_row(registrationForm.forename, { 'label': 'Prénom' }) }}
+           
+ </div>
+</div>
         {{ form_row(registrationForm.type, { 'label': 'Vous êtes ...' }) }}
         {{ form_row(registrationForm.email, { 'label': 'E-mail' }) }}
         {{ form_row(registrationForm.plainPassword, {

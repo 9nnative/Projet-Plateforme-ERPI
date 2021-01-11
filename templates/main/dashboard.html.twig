@@ -3,9 +3,25 @@
 {% block title %}Dashboard - Plateforme ERPI{% endblock %}
 
 {% block body %}
-<section class="main">
+<section class="global">
 
-        {% for label, messages in app.flashes %}
+
+
+                <ul class="uk-breadcrumb">
+                    <li><a href="{{ path('main') }}">Acceuil</a></li>
+                    <li><b><a href="#">Dashboard</a></b></li>
+                </ul>
+
+<h2 class="ui center aligned icon header">
+  <i class="settings icon"></i>
+  <div class="content">
+    Dashboard
+    <div class="sub header">Visualisez vos tâches et vos projets. Restez informé des dernières modifications.</div>
+  </div>
+</h2>
+
+
+          {% for label, messages in app.flashes %}
             <div class="uk-alert-primary" uk-alert>
                 {% for message in messages %}
                     <div class="flash-{{ label }}">
@@ -15,92 +31,130 @@
             </div>
         {% endfor %}
 
-                <ul class="uk-breadcrumb">
-                    <li><a href="{{ path('main') }}">Acceuil</a></li>
-                    <li><a href="#">Dashboard</a></li>
-                </ul>
-<h1 class="center">Dashboard</h1>
 
-<div class="uk-text-center" uk-grid>
-    <div class="uk-width-1-3">
-        <div class="uk-card uk-card-default uk-card-body">
-        <h3 class="uk-card-title">Mes projets favoris</h3>
-        <dl class="uk-description-list uk-description-list-divider">
-        {% for prjfollowed in prjfollowed %}
+<h1 class="uk-heading-medium">Mes projets</h1>
+<div class="ui piled segments">
+
+  {% for prjfollowed in prjfollowed %}
+  <div class="ui segment">
             <dt><a href="{{ path('project_details', {'id':prjfollowed.id}) }}">{{ prjfollowed.title }}</a></dt>
             <dd>{{ prjfollowed.summary }}</a></dd>
+  </div>
     {% endfor %}
-        </div>
-    </div>
-    <div class="uk-width-1-3">
-        <div class="uk-card uk-card-default uk-card-body">
-                <h3 class="uk-card-title">Tâches créées<span class="uk-label"></span></h3>
-        <dl class="uk-description-list uk-description-list-divider">
-        {% for taskself in taskself %}
+
+</div>
+
+
+
+
+
+
+
+<h1 class="uk-heading-medium">Tâches créées</h1>
+<div class="ui piled segments">
+
+  {% for taskself in taskself %}
+  <div class="ui segment">
     <dt><a href="{{ path('task_details', {'id':taskself.id}) }}">{{ taskself.title }}</a></dt>
     <dd>{{ taskself.content }}</a></dd>
     <dd>
-    {% if taskself.state == false %}
-            <span class="uk-label">Nouveau</span>
-            {% endif %}
-            {% if taskself.state.id == '1' %}
-            <span  class="uk-label uk-label-success labelstate">Terminée</span>
-            {% endif %}
-            {% if taskself.state.id == '2' %}
-            <span class="uk-label uk-label-warning labelstate">En cours</span>
-            {% endif %}
-            {% if taskself.state.id == '3' %}
-            <span class="uk-label uk-label-danger labelstate">Annulée</span>
-            {% endif %}
-            {% if taskself.state.id == '4' %}
-            <span class="uk-label labelstate"><a class="" href="" uk-tooltip="Il n'y a aucun état de défini pour cette tâche. Cliquez ici pour en définir une." uk-icon="icon: bolt"></a></span>{% endif %}
+    {% if taskself.state == "inprogress" %}
+     <span class="uk-label uk-label-warning">En cours</span>
+     {% endif %}
+         {% if taskself.state == "cancelled" %}
+     <span class="uk-label uk-label-danger">Annulée</span>
+     {% endif %}
+         {% if taskself.state == "done" %}
+     <span class="uk-label uk-label-success" uk-tooltip="title: Success ! Tâche terminée."><span uk-icon="icon: check"></span></span>
+     {% endif %}
+         {% if taskself.state == "none" %}
+     <span class="uk-label">Aucun état</span>
+     {% endif %}
     </dd>
     <br>
-    <dd><progress class="uk-progress" value="{{ taskself.progress }}" max="100"></progress></dd>
-</dl>
-    {% endfor %}
-        </div>
+
+<div class="uk-grid-match uk-grid-small uk-text-center" uk-grid>
+    <div class="uk-width-1-2@m">
+  
+
+    <dd><ul class="uk-iconnav">
+    <p class="uk-text-muted">Actions :</p>
+    <li><a href="#" uk-tooltip="title: Attribuer cette tâche à ..." uk-icon="icon: plus"></a></li>
+        <li><a href="#" uk-tooltip="title: État" uk-icon="icon: bolt"></a></li>
+    <li><a href="{{ path('task_details', {'id':taskself.id}) }}" uk-tooltip="title: Détails" uk-icon="icon: copy"></a></li>
+    <li><a href="{{ path('task_update', {'id': taskself.id}) }}" uk-tooltip="title: Édition" uk-icon="icon: file-edit"></a></li>
+    <li><a  href="{{ path('task_remove', {'id': taskself.id}) }}" uk-tooltip="title: Supprimer" uk-icon="icon: trash"></a></li>
+</ul></dd>
+ 
+
     </div>
-   <div class="uk-width-1-3">
-        <div class="uk-card uk-card-default uk-card-default uk-card-body">
-           <h3 class="uk-card-title">Tâches attribuées<span class="uk-label"></span></h3>
-        <dl class="uk-description-list uk-description-list-divider">
-        {% for taskattr in taskattr %}
-    <dt><a href="{{ path('task_details', {'id':taskattr.id}) }}">{{ taskattr.title }}</a></dt>
+
+<div class="uk-width-1-2@m">
+<progress uk-tooltip ="title:Progression : {{ taskself.progress }} %" value="{{ taskself.progress }}" class="uk-progress" value="{{ taskself.progress }}" max="100"></progress>
+</div>
+
+       </div>
+</div>
+    {% endfor %}
+    </div>
+ </div>
+
+
+
+<h1 class="uk-heading-medium">Tâches attribuées</h1>
+<div class="ui piled segments">
+
+  {% for taskattr in taskattr %}
+  <div class="ui segment">
+ <dt><a href="{{ path('task_details', {'id':taskattr.id}) }}">{{ taskattr.title }}</a></dt>
     <dd>{{ taskattr.content }}</a></dd>
     <dd>
-    {% if taskattr.state == false %}
-            <span class="uk-label">Nouveau</span>
-            {% endif %}
-            {% if taskattr.state.id == '1' %}
-            <span  class="uk-label uk-label-success labelstate">Terminée</span>
-            {% endif %}
-            {% if taskattr.state.id == '2' %}
-            <span class="uk-label uk-label-warning labelstate">En cours</span>
-            {% endif %}
-            {% if taskattr.state.id == '3' %}
-            <span class="uk-label uk-label-danger labelstate">Annulée</span>
-            {% endif %}
-            {% if taskattr.state.id == '4' %}
-            <span class="uk-label labelstate"><a class="" href="" uk-tooltip="Il n'y a aucun état de défini pour cette tâche. Cliquez ici pour en définir une." uk-icon="icon: bolt"></a></span>{% endif %}
+       {% if taskattr.state == "inprogress" %}
+     <span class="uk-label uk-label-warning" uk-tooltip="title: État de la tâche : en cours">En cours</span>
+     {% endif %}
+         {% if taskattr.state == "cancelled" %}
+     <span class="uk-label uk-label-danger" uk-tooltip="title: État de la tâche : annulée">Annulée</span>
+     {% endif %}
+         {% if taskattr.state == "done" %}
+     <span class="uk-label uk-label-success" uk-tooltip="title: Success ! Tâche terminée." ><span uk-icon="icon: check"></span></span>
+     {% endif %}
+         {% if taskattr.state == "none" %}
+     <span class="uk-label">Aucun état</span>
+     {% endif %}
     </dd>
     <br>
-    <dd><progress class="uk-progress" value="{{ taskattr.progress }}" max="100"></progress></dd>
+    <dd><progress class="uk-progress" uk-tooltip ="title:Progression : {{ taskattr.progress }} %" value="{{ taskattr.progress }}" max="100"></progress></dd>
+    </div>
     {% endfor %}
-    </dl>
-        </div>
+
+</div>
+</div> 
+<br>
+</div>
+<div id="modal-edit-task" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    {{ form_start(formTask) }}
+     {{ form_row(formTask.title, { 'label': 'Titre de la tâche' }) }} 
+
+    <br>
+    <div uk-grid>
+    <div class="uk-width-1-3">{{ form_row(formTask.date_start, { 'label': 'Date de début ' }) }}</div>
+    <div class="uk-width-1-3">{{ form_row(formTask.date_end, { 'label': 'Date de fin ' }) }}</div>
+    </div>
+    <br>
+
+    {{ form_row(formTask.content, { 'label': 'Contenu' }) }}
+ <br>
+    {{ form_row(formTask.financial_details, { 'label': 'Détails financiers' }) }}
+   <br>
+        {{ form_row(formTask.is_private, { 'label': 'Définir en privé' }) }}
+            <div class="uk-margin center">
+       <button type="submit" class="btn uk-button uk-button-default center">Créer</button>
+    </div>
+ {{ form_end(formTask) }}
     </div>
 </div>
-{# 
-<div class="uk-text-center" uk-grid>
-    <div class="uk-width-1-2">
-        <div class="uk-card uk-card-default uk-card-body">1-2</div>
-    </div>
-    <div class="uk-width-1-2">
-        <div class="uk-card uk-card-default uk-card-body">1-2</div>
-    </div>
-</div> #}
-
 
 </section>
 {% endblock %}
