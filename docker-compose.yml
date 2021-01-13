@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  php:
+    container_name: php
+    build: ./docker/php
+    ports:
+      - 80:8000
+    volumes:
+      - ./docker/php/app:/app/
+    networks:
+      - site
+    
+
+networks:
+  site:
