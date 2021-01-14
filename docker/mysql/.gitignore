@@ -1,0 +1,2 @@
+# ignore the db dump as it contains data
+init.sql

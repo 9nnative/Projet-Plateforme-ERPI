@@ -15,6 +15,12 @@ compose install
 symfony server:start
 ```
 
+## Procédure de démarrage pour la PROD
+1. Charger les variable d'environnement `.env.php.prod` et `.env.mysql.prod`
+2. Démarrage des containers `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
+
+
+
 ## Commandes Composer
 ``` sh
 composer install --no-scripts
@@ -30,7 +36,10 @@ Demarrer le container PHP
 docker-compose up -d --build
 # -d pour detacher, c'est à dire que les logs ne sont pas affiché. Le container est actif en tâche de fond.
 # --build recreer le container depuis zero, necessaire sur les parametre d'un Dockerfile a été modifié
+```
 
+``` 
+docker-compose up --force-recreate
 ```
 
 Pour avoir acces au container (notament celui acceuillant PHP)
@@ -47,12 +56,20 @@ Arreter les containers
 docker-compose down
 ```
 
+Arreter les containers et supprimer les volumes !!! uniquement pour les testes 
+```
+docker-compose down -v
+```
+
 # Sources et documentation
 
 ## Documentation officiel
 [Symfony deployment](https://symfony.com/doc/current/deployment.html)
 
 ## exemples Docker + Symfony
-[](https://www.clemdesign.fr/blog/2020/docker-configurer-un-projet-symfony-partie-1-deployer-php-fpm-et-nginx)
-[](https://webdevpro.net/utiliser-symfony-dans-docker/)
+[Symfony, mysql & docker](https://www.clemdesign.fr/blog/2020/docker-configurer-un-projet-symfony-partie-1-deployer-php-fpm-et-nginx)
+[Symfony & docker](https://webdevpro.net/utiliser-symfony-dans-docker/)
 
+## mysql initialization
+[mysql official docker image](https://hub.docker.com/_/mysql)
+[Stackoverflow mysql initialisation](https://stackoverflow.com/questions/38504257/mysql-scripts-in-docker-entrypoint-initdb-are-not-executed/52715521)
