@@ -50,7 +50,9 @@ class ConversationController extends AbstractController
                 $message->setSentAt($date);
                 $manager->persist($message);
                 $manager->flush();
+
                 header("Refresh:0");
+
                 $this->addFlash('success', 'Message posté !');
 
         }
