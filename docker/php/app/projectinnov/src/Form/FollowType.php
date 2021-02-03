@@ -21,7 +21,6 @@ class FollowType extends AbstractType
         ->add('users', EntityType::class, [
             'attr' => ['class' => 'ui fluid selection dropdown'],
             // 'multiple' => true,
-            'choice_label' =>'name',
             // 'expanded' => true,
             'class' => User::class,
             

@@ -3,15 +3,12 @@
 {% block title %}Rejoindre la plateforme{% endblock %}
 
 {% block body %}
+
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    
-<section class="global nomargin">
-<br>
     {% if app.user %}
-
         <div uk-alert>
     <a class="uk-alert-close" uk-close></a>
     <h3>Voulez-vous vous déconnecter ?</h3>
@@ -22,45 +19,72 @@
     {% endif %}
 
     {% if not app.user %}
-<h1 class="uk-heading-large uk-text-center"><span><i class="plus square icon"></i><span></h1>
-<br>
-                <div class="uk-alert-success cardlogin uk-card" uk-alert>
-    <a class="uk-alert-close" uk-close></a>
-    <p>Déjà parmis nous ? <a href="{{ path('app_login') }}">Je me connecte !</a></p>
-</div>
-        <div class="uk-card uk-card-default uk-card-hover uk-card-body cardlogin">
 
-            <h3 class="uk-card-title center">Rejoindre la plateforme</h3>
-            <p></p>
-    <h1 class="center"></h1>
-    {{ form_start(registrationForm) }}
+<div class="ui attached message">
+  <div class="header">
+    <i class="user plus icon"></i> Bienvenue sur le site Projet Innovation ! 
+  </div>
+  <p>Renseignez les champs ci-dessous afin de pouvoir vous enregistrer.</p>
+</div>
+
+
+
+
+<div class="ui form attached fluid segment">
+    {{ form_start(registrationForm, { 'class': 'ui form attached fluid segment' }) }}
     <div uk-grid>
-<div class="uk-width-1-2">
+            <div class="uk-width-1-2">
+
         {{ form_row(registrationForm.name, { 'label': 'Nom' }) }}
-         </div>
-<div class="uk-width-1-2">
+            </div>
+
+            <div class="uk-width-1-2">
         {{ form_row(registrationForm.forename, { 'label': 'Prénom' }) }}
            
- </div>
-</div>
+    </div>
+    </div>
         {{ form_row(registrationForm.type, { 'label': 'Vous êtes ...' }) }}
-        {{ form_row(registrationForm.email, { 'label': 'E-mail' }) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Mot de passe'
-        }) }}
-                    <div uk-alert>
+
+
+
+<div class="form-control">
+<div class="field">
+    {{ form_label(registrationForm.email) }}
+    {{ form_widget(registrationForm.email) }}
+  </div>  
+
+ {{ form_errors(registrationForm.email) }}
+
+</div>
+
+
+
+<div class="field">
+ 
+    {{ form_widget(registrationForm.plainPassword) }}
+  </div> 
+
+
+    <div uk-alert>
     <a class="uk-alert-close" uk-close></a>
     <h3>Conditions d'utilisation</h3>
     <div class="mb-3">
-            En vous inscrivant, vous acceptez les <a href="{{ path('app_logout') }}">conditions d'utilisation</a> du site.
+            En vous inscrivant, vous acceptez les <a href="{{ path('cgu') }}">conditions d'utilisation</a> du site.
         </div>
-</div>
-        <div class="uk-margin center">
-       <button type="submit" class="btn uk-button uk-button-default center">S'inscrire</button>
     </div>
+<button type="submit" class="ui submit button">S'inscrire</button>
 
-    </div>
-    {{ form_end(registrationForm) }}
+
+    
+
+
+
+{{ form_end(registrationForm) }}
+</div>
+<div class="ui bottom attached warning message">
+  <i class="icon help"></i>
+  Vous avez déjà un compte? <a href="{{ path('app_login') }}">Connectez-vous ici</a>.
+</div>
     {% endif %}
-</section>
+
 {% endblock %}

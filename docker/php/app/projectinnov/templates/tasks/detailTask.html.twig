@@ -14,13 +14,7 @@
                 {% endfor %}
             </div>
         {% endfor %}
-
-                <ul class="uk-breadcrumb">
-                    <li><a href="{{ path('main') }}">Acceuil</a></li>
-                    <li><a href="{{ path('allprojects') }}">Tous les projets</a></li>
-                    <li><a href="#">{{ task.project.title }}</a></li>
-                    <li><a href="#">{{ task.title }}</a></li>
-                </ul>
+{# 
 <div class="uk-card uk-card-default uk-card-body  cardlogin">
 <article class="uk-article">
 
@@ -137,12 +131,188 @@
         
     </div>
 </div>
-</section>
+</section> #}
+
+<h3 class="ui top attached header">
+  Détails de la tâche
+</h3>
+
+<div class="ui styled fluid accordion">
+
+
+
+  <div class="active title">
+    <i class="dropdown icon"></i>
+    Contenu
+  </div>
+  <div class="active content">
+    <p>{{ task.content }}</p>
+  </div>
+  <div class="title">
+    <i class="dropdown icon"></i>
+    Participants
+  </div>
+  
+  <div class="content">
+
+
+    {% if task.user is empty %}
+<dd>Aucun utilisateur n'a été ajouté à la tâche.</dd>
+{% else %}
+{% for userstask in userstask %}
+<dd>{{ userstask.name }} {{ userstask.forename }}
+{% if app.user == userstask %}
+<b>(Moi)</b>
+{% endif %}
+</dd>
+{% endfor %}
+{% endif %}
+<div class="ui message">
+  <div class="header">
+    Créateur de la tâche
+  </div>
+  <p>{{ task.owner.forename }} {{ task.owner.name }}
+  {% if app.user == task.owner %}
+    <b>(Moi)</b>
+  {% endif %}
+  </p>
+</div>
+  
+  </div>
+  <div class="title">
+    <i class="dropdown icon"></i>
+    Dates
+  </div>
+  <div class="content">
+     <p><b>Date de début</b> : {{ task.datestart|format_date('long', locale='fr') }}</p>
+    <p><b>Date de fin</b> : {{ task.dateend|format_date('long', locale='fr') }}</p>
+  </div>
+  <div class="title">
+    <i class="dropdown icon"></i>
+    Chiffres
+  </div>
+  <div class="content">
+  <b>Progression</b>
+<div class="ui teal progress" id="example2">
+  <div class="bar"></div>
+  <div class="label">{{ task.progress }} %</div>
+</div>
+    <p></p>
+  </div>
+  <div class="ui labeled icon menu">
+  <a id="tgladduser" class="item">
+    <i class="user plus icon"></i>
+    Assigner un utilisateur à cette tâche
+  </a>
+  <a href="{{ path('task_update', {'id':task.id}) }}" class="item">
+    <i class="pencil icon"></i>
+    Modifier cette tâche
+  </a>
+  <a class="item">
+    <i class="trash can icon"></i>
+    Supprimer cette tâche
+  </a>
+</div>
+</div>
+{% if task.isprivate == true and task.owner == app.user %}
+<div class="ui bottom attached warning message">
+  <i class="user secret icon"></i>
+  Cette tâche est privée - les autres utilisateurs ne peuvent pas la voir.
+</div>
+{% endif %}
+
+<div class="ui mini modal adduser">
+  <i class="close icon"></i>
+  <div class="content">
+    <div class="description">
+      <div class="ui header">Ajouter un utilisateur</div>
+
+                                     <div class="field">
+                          <div id="ui-user-search" class="ui input search">
+                            <div class="ui icon input">
+                              <input class="prompt" type="text" placeholder="Rechercher ...">
+                              <i class="users icon"></i>
+                            </div>
+                            <div class="results"></div>
+                          </div>
+                        </div>
+
+    </div>
+  </div>
+</div>
 
 
 
 
+<script>
 
+ $('#ui-user-search').search({
+      type: 'category',
+      searchFields: ['Id', 'Name', 'Email'],
+      fullTextSearch: true,
+      onSelect: function onSelect(result, response) {
+        console.log(result);
+      },
+      apiSettings: {
+        responseAsync: function mockResponseAsync(settings, callback) {
+          if (settings.urlData.query) {
+            (function() {
+              var result = {
+                "results": {}
+              };
+
+              mockUsers.filter(function(user) {
+                return user.Name.toLowerCase().includes(settings.urlData.query.toLowerCase());
+              }).forEach(function(item) {
+                console.log(item);
+                result.results['category' + item.Id.toString()] = {
+                  "name": item.Id.toString(),
+                  "results": [item]
+                };
+              });
+              callback(result);
+            })();
+          } else callback({});
+        },
+        throttle: 400
+      },
+      templates: {
+        message: function message(type, _message) {
+          var html = '<div class="message empty"><div class="header">Aucun résultat</div></div>';
+          return html;
+        },
+        category: function category(response) {
+          var html = '';
+          Object.keys(response.results).forEach(function(key) {
+            html += '<div class="category"><div class="name">#' + response.results[key].results[0].Type + '</div> <a href="/addUser/' + response.results[key].results[0].Id + '/toTask/{{task.id}}"class="result"><div class="content"><div class="title">' + response.results[key].results[0].Name + ' ' + response.results[key].results[0].Forename + '</div><div class="description">' + response.results[key].results[0].Email + '</div></div></a></div>';
+          });
+          return html;
+        }
+      }
+    });
+
+var mockUsers = [
+{% for users in users %}
+{ Id: '{{ users.id }}',
+Forename: '{{ users.forename }}',
+Name: '{{ users.name }}',
+Email: '{{ users.email }}',
+Type: '{{ users.type.name }}' }, 
+{% endfor %}
+];
+$('#tgladduser').click(function(){      
+            $('.ui.mini.modal.adduser')
+            .modal('show')
+            ;
+});
+$('.ui.accordion')
+  .accordion()
+;
+$('#example2').progress({
+  percent: {{ task.progress }}
+});
+
+</script>
 
 
 

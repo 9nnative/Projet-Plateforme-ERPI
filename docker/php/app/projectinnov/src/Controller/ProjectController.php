@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use DateTime;
 use DateTimeZone;
+use HTMLPurifier;
 use App\Entity\Task;
 use App\Entity\Files;
 use App\Form\TaskType;
@@ -13,6 +14,7 @@ use App\Form\FilesType;
 use App\Form\FollowType;
 use App\Form\CommentType;
 use App\Form\ProjectType;
+use App\Entity\Notification;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ProjectController extends AbstractController
 {
@@ -49,7 +52,13 @@ class ProjectController extends AbstractController
     /**
      * @Route("/project/{id}", name="project_details")
      */
-    public function showProject(Project $project = null, Comment $comment = null, Task $task = null, Request $request, SluggerInterface $slugger, EntityManagerInterface $manager) 
+    public function showProject(Project $project = null, 
+    // Notification $notification, 
+    Comment $comment = null, 
+    Task $task = null, 
+    Request $request, 
+    SluggerInterface $slugger, 
+    EntityManagerInterface $manager) 
     {   
         if(!$project) // si le projet n'existe pas on route vers sessions et on affiche une erreur
         {
@@ -99,7 +108,6 @@ class ProjectController extends AbstractController
 
         }
         
-
 
         $prjfollowed = $project->getUsers();
 
@@ -161,11 +169,29 @@ class ProjectController extends AbstractController
             //  
      
 
-                foreach($formu->getData() as $user)// pour chaque stagiaire on ajoute le stagiaire à la session
+                foreach($formu->getData() as $user)// pour chaque user on ajoute le user au projet
                 {
                   $project->addUser($user);
+                  $date = new \DateTime('now');
+
+                  $tz_object = new DateTimeZone('Europe/Paris');
+                  $date->setTimezone($tz_object);
+                  
+                  
+                  $projectname = $project->getTitle();
+                  $notification = new Notification();
+                  $sender = $this->getUser()->getForename();
+
+                  
+                  $notification->setContent("$sender vous a ajouté au projet $projectname !");
+                  $notification->setDate($date);
+                  $notification->setUsertarget($user);
+                  $notification->setType("newprj");
+
+                  $manager->persist($notification);
                 }
                 $manager->persist($project);
+                
                 $manager->flush(); 
                 
                 $this->addFlash('success', 'La personne a correctement été ajoutée au projet. ');
@@ -254,6 +280,8 @@ class ProjectController extends AbstractController
        
         if($form->isSubmitted() && $form->isValid())
         {
+            if($project->getDateStart() < $project->getDateEnd())
+            {
                 $this->addFlash('success', 'Le projet a été créé');
                 $project->setOwner($this->getUser());
                 $project->setState(4);
@@ -264,6 +292,9 @@ class ProjectController extends AbstractController
                 $manager->persist($project);
                 $manager->flush();
                 return $this->redirectToRoute('allprojects');
+
+            } else $this->addFlash('error', 'La date de fin du projet doit être supérieure à la date de début.');  
+
 
         }
         return $this->render('projects/addProject.html.twig', [
@@ -295,6 +326,32 @@ class ProjectController extends AbstractController
         return $this->redirectToRoute('allprojects');  
 
     }
+
+    /**
+     * @Route("/removeProject/{id}", name="project_remove")
+     */
+    public function removeProject(Project $project = null, Request $request, EntityManagerInterface $manager)
+    {
+        if(!$project)
+        {
+            $this->addFlash('error', 'Ce projet n\'existe pas');
+            return $this->redirectToRoute('allprojects');
+        }
+
+        $tasks = $project->getTasks();
+
+        foreach($tasks as $task)
+        {
+             $manager->remove($task);
+        }
+
+       $manager->remove($project);
+       $manager->flush();
+
+       $this->addFlash('success', 'Le projet a correctement été supprimé.');
+       return $this->redirectToRoute("allprojects");
+    }
+
     /**
      * @Route("/addUsersToProject/{id}", name="user_follows_project")
      */
@@ -310,11 +367,14 @@ class ProjectController extends AbstractController
             $form->handleRequest($request);
             if($form->isSubmitted() && $form->isValid())
             {
-                foreach($form->getData() as $stagiaire)// pour chaque stagiaire on ajoute le stagiaire à la session
+                foreach($form->getData() as $usr)
                 {
-                    $project->addUsers($stagiaire);
+                    $project->addUsers($usr);
+
+    
                 }
                 $manager->persist($project);
+                $manager->persist($notification);
                 $manager->flush(); 
 
                 return $this->redirectToRoute('project_details', ['id' => $project->getId()] );
@@ -327,7 +387,8 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/removeComment/{id}", name="remove_comment")
+     * @Route("/removeComment/{id_project}/{id}", name="remove_comment")
+     * @ParamConverter("project", options={"id" = "id_project"})
      */
     public function removeComment(Project $project = null, Comment $comment = null, EntityManagerInterface $manager)
     {
@@ -335,15 +396,14 @@ class ProjectController extends AbstractController
         if(!$comment)
         {
             $this->addFlash('error', 'Ce commentaire n\'existe pas');
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('allprojects');
         }
-       $usersattr = $comment->getUser(); //à voir
+
 
        $manager->remove($comment);
        $manager->flush();
-       header("Refresh:0");
-       
-       return $this->redirectToRoute('allprojects');
+       $this->addFlash('success', 'Commentaire supprimé !');
+       return $this->redirectToRoute('project_details', ['id' => $project->getId()] );
        
     }
 

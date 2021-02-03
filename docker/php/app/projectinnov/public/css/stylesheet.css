@@ -1,8 +1,4 @@
-.global{
-    margin-left: 20rem !important;
-    margin-right: 5% !important;
-    margin-top: 1rem; 
-}
+
 .relative{
     position: relative !important;
     top: 40px !important; left: 40px;
@@ -51,18 +47,19 @@
     height: 100% !important
 
 }
-
+input{
+    border-radius : 5px !important;
+}
 .centerlogin{
     text-align: center;
-    margin-top: -20px;
 }
 .modalprofil{
     width: 15rem !important;
 }
-.search{
+/* .search{
     top: 10rem !important;
     right: -20rem !important;
-}
+} */
 .prj{
     margin-left: 33%;
 }
@@ -84,17 +81,15 @@
 #commentbutton{
     margin-bottom: 2rem;
 }
-.cardlogin{
-    margin-left: 20%;
-    margin-right: 20%;
-
-}
 
 .uk-button{
     border-radius:4px !important;
 }
 .uk-card{
     border-radius:4px !important;
+}
+.ui.category.search .results{
+    width : 18em !important;
 }
 body{
     font-family: 'Montserrat', sans-serif !important;
@@ -168,7 +163,7 @@ text-shadow:
 
 
 /* Sur tous types d'écrans orientés verticalement */
-@media all and (orientation: portrait){
+@media screen and (orientation: portrait){
 
 .mobilenav{
     display : block !important;
@@ -177,6 +172,9 @@ text-shadow:
     margin-left: 1em !important;
 }
 .navbarpc{
+    display : none !important;
+}
+.right.item{
     display : none !important;
 }
 .uk-card{
@@ -194,5 +192,9 @@ text-shadow:
 }
 .desktop{
     display: none !important;
+}
+.loginsize{
+    width : 100% !important;
+    margin-left: 0% !important;
 }
 }

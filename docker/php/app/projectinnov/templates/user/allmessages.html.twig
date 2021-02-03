@@ -15,15 +15,10 @@
                 {% endfor %}
                 </div>
                 {% endfor %}
-
-                <ul class="uk-breadcrumb">
-                    <li><a href="#">Mon profil</a></li>
-                    <li><b><a href="{{ path('allmessages') }}">Mes conversations</a></b></li>
-                </ul>
                 
 <div>
         <div class="uk-card uk-card-default uk-width-1-2 uk-card-small uk-card-hover uk-card-body">
-        <h3 class="uk-card-title center">Mes conversations <i class="envelope outline icon"></i></h3>
+        <h3 class="uk-card-title center">Mes conversations <i class="comment outline icon"></i></h3>
             <div id="commentbutton" class="uk-margin center">
         <button type="submit" uk-toggle="target: #modal-add-conv" class="uk-button uk-button-default center">Démarrer une conversation avec ...</button>
 <div id="modal-add-conv" uk-modal>
@@ -42,26 +37,36 @@
 
 
     </div>
-<ul class="uk-list uk-list-divider">
+<ul class="uk-list">
 
 {% for conversation in conversations %}
     {% if conversation.owner.id == app.user.id %}
-        <li class="uk-text-bold">{{conversation.recipient.forename}} {{conversation.recipient.name}} <a href="{{ path('conv_details', {'id':conversation.id}) }}" uk-tooltip="title:Ouvrir la conversation avec {{conversation.recipient.forename}}" uk-icon="icon: comment; ratio: 1.5"></a></li>
+      <a href="{{ path('conv_details', {'id':conversation.id}) }}" uk-tooltip="title:Ouvrir la conversation avec {{conversation.recipient.forename}}"><b>{{conversation.recipient.forename}} {{conversation.recipient.name}}</b> </a></li>
         {% if conversation.lastmessage != null %}
-        {{conversation.lastmessage.sentby.forename}} : {{conversation.lastmessage.content}}
+            {% if conversation.lastmessage.sentby == app.user %}
+            <p class="uk-text-muted uk-text-normal" uk-tooltip ="title: Dernier message envoyé">
+             Dernier message le  {{conversation.lastmessage.sentat|format_datetime('long', 'short', locale='fr')}}
+             </p>
+              
+           {% else %}
+           <p class="uk-text-muted uk-text-normal" uk-tooltip ="title: Dernier message envoyé">
+       {{conversation.lastmessage.sentat|format_datetime('long', 'short', locale='fr')}}
+                </p>
+        </li>
+         {% endif %}
         {% endif %}
     {% elseif conversation.recipient.id == app.user.id %}
-        <li class="uk-text-bold">{{conversation.owner.forename}} {{conversation.owner.name}} <a href="{{ path('conv_details', {'id':conversation.id}) }}" uk-tooltip="title:Ouvrir la conversation avec {{conversation.owner.forename}}" uk-icon="icon: comment; ratio: 1.2"></a> 
+        <a href="{{ path('conv_details', {'id':conversation.id}) }}" uk-tooltip="title:Ouvrir la conversation avec {{conversation.owner.forename}}"><b>{{conversation.owner.forename}} {{conversation.owner.name}}</b></a></li>
         {% if conversation.lastmessage != null %}
         <p class="uk-text-muted uk-text-normal" uk-tooltip ="title: Dernier message envoyé">
             {% if conversation.lastmessage.sentby == app.user %}
-            Moi
+            Dernier message le
             {% else %}
             {{conversation.lastmessage.sentby.forename}}
             {% endif%}
-         : {{conversation.lastmessage.content}}
+         {{conversation.lastmessage.sentat|format_datetime('long', 'short', locale='fr')}}
         </p>
-        </li>
+     
         {% endif %}
     {% endif %}
 {% endfor %}

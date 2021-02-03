@@ -7,6 +7,8 @@ use DateTimeZone;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Entity\Files;
+use Twig\Environment;
+use App\Entity\Ticket;
 use App\Form\TaskType;
 use App\Form\UserType;
 use App\Entity\Comment;
@@ -14,11 +16,14 @@ use App\Entity\Message;
 use App\Entity\Project;
 use App\Form\FilesType;
 use App\Form\FollowType;
+use App\Entity\Actuality;
 use App\Form\CommentType;
 use App\Form\MessageType;
 use App\Form\ProjectType;
 use App\Entity\Profilepics;
+use App\Form\ActualityType;
 use App\Entity\Conversation;
+use App\Entity\Notification;
 use Symfony\Component\Mime\Email;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,14 +42,168 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class MainController extends AbstractController
 {
+
     /**
      * @Route("/", name="main")
      */
     public function index(): Response
     {
-        return $this->render('main/index.html.twig');
+        $users = $this->getDoctrine()
+        ->getRepository(User::class)
+        ->findAll();
+
+        $actualities = $this->getDoctrine()
+        ->getRepository(Actuality::class)
+        ->findAll();
+
+        return $this->render('main/index.html.twig', [
+        'users' => $users,
+        'actualities' => $actualities,
+        ]);
     }
 
+    /**
+     * @Route("/cgu", name="cgu")
+     */
+    public function cgu(): Response
+    {
+        return $this->render('main/cgu.html.twig');
+    }
+    /**
+     * @Route("/adminpanel", name="adminpanel")
+     */
+    public function admin(Actuality $actuality = null, Ticket $tickets = null, Request $request): Response
+    {
+        
+        $tickets = $this->getDoctrine()
+        ->getRepository(Ticket::class)
+        ->findAll();
+
+        $actuality = new Actuality;
+
+        $form = $this->createForm(ActualityType::class, $actuality);
+        
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+
+            $tz_object = new DateTimeZone('Europe/Paris');
+            $date = new \DateTime('now');
+            $date->setTimezone($tz_object);
+            $actuality->setDate($date);  
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($actuality);
+            $entityManager->flush();
+            $this->addFlash('success', 'Actualité créée');
+
+        }
+
+        return $this->render('main/admin.html.twig', [
+            'tickets' => $tickets,
+            'formActuality' => $form->createView(),
+            ]);
+    }
+    /**
+     * @Route("/profile/{id}", name="user_profile")
+     */
+    public function profile(User $user = null)
+    {
+        if(!$user) // si le projet n'existe pas on route vers sessions et on affiche une erreur
+        {
+            $this->addFlash('error', 'Cet utilisateur n\'existe pas.');
+            return $this->redirectToRoute('main');
+        }
+        $friends = $user->getFriend();
+        
+        return $this->render('main/profile.html.twig', [
+            'user' => $user,
+            'friends'=> $friends,
+            ]);
+    }
+    /**
+     * @Route("/notifications", name="notifications")
+     */
+    public function Notifications()
+    {
+        $notifs = $this->getUser()->getNotifications();
+
+        return $this->render('user/notifications.html.twig', [
+        'notifs' => $notifs,
+        ]);
+}
+    /**
+     * @Route("/removeNotification/{id}", name="notification_remove")
+     */
+    public function RemoveNotification(Notification $notification = null, EntityManagerInterface $manager)
+    {
+        $notifs = $this->getUser()->getNotifications();
+        if(!$notification)
+        {
+            $this->addFlash('error', 'Cette notification n\'existe pas');
+            return $this->redirectToRoute('main');
+        }
+        $this->addFlash('success', 'Notification supprimée');
+       $manager->remove($notification);
+       $manager->flush();
+
+        return $this->render('user/notifications.html.twig', [
+            'notifs' => $notifs,
+        ]);
+}
+
+    /**
+     * @Route("/addfriend/{id}", name="addfriend")
+     */
+    public function addFriend(User $user = null, EntityManagerInterface $manager)
+    {
+        if(!$user) 
+        {
+            $this->addFlash('error', 'Cet utilisateur n\'existe pas.');
+            return $this->redirectToRoute('main');
+        }
+        
+        // vérif à faire si l'utilisateur l'a déjà en ami
+
+        $friends = $user->getFriend();
+        $user->addUser($this->getUser());
+        $currentuser = $this->getUser();
+        $currentuser->addUser($user);
+
+        $manager->persist($user);
+        $manager->flush();
+
+        $this->addFlash('success', 'L\'utilisateur a bien été ajouté à vos amis !');
+
+        return $this->render('main/profile.html.twig', [
+            'friends' => $friends,
+            'user' => $user,
+            ]);
+    }
+
+    /**
+     * @Route("/removefriend/{id}", name="removefriend")
+     */
+    public function removeFriend(User $user = null, EntityManagerInterface $manager)
+    {
+        if(!$user) 
+        {
+            $this->addFlash('error', 'Cet utilisateur n\'existe pas.');
+            return $this->redirectToRoute('main');
+        }
+
+        $currentuser = $this->getUser();
+        $user->removeUser($this->getUser());
+        $manager->persist($user);
+        $manager->flush();
+
+
+        $this->addFlash('success', 'L\'utilisateur a bien été supprimé de vos amis !');
+
+        return $this->redirectToRoute('user_profile', ['id' => $currentuser->getId()]);
+
+    }
     /**
      * @Route("/edituser", name="edituser")
      */
@@ -125,7 +284,7 @@ class MainController extends AbstractController
         ->getRepository(Task::class)
         ->findAll();
 
-        return $this->render('main/dashboard.html.twig', [
+        return $this->render('main/dashboardv2.html.twig', [
             'formTask' => $formt->createView(),
             'prjfollowed' => $prjfollowed,
             'project' => $project,

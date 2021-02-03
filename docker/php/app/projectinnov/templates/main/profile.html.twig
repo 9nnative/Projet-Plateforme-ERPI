@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil de l'utilisateur - Plateforme ERPI{% endblock %}
+
+{% block body %}
+
+<div class="ui segment">
+  <div class="ui two column very relaxed grid">
+<div class="ui card">
+  <div class="image">
+    <img src="{{ user.profilepics.path }}">
+  </div>
+  <div class="content">
+    <p class="header">{{ user.forename }} {{ user.name }}</p>
+    <div class="meta">
+        {{ user.type.name }}
+    </div>
+    <div class="description">
+        {{ user.bio }}
+      </div>
+  </div>
+      <div class="extra content">
+      <span class="right floated">
+        Membre depuis 2021
+      </span>
+      <span>
+        <i class="user icon"></i>
+        ({{ friends|length }}) Amis
+      </span>
+    </div>
+
+{% if app.user != user %}
+        <div onclick="window.location.href='{{ path('addfriend', {'id':user.id}) }}'" class="ui bottom attached button">
+      <i class="add icon"></i>
+      Ajouter en ami
+    </div>
+{% endif %}
+
+
+
+
+{% if app.user != user %}
+         <div onclick="window.location.href='{{ path('allmessages') }}'" class="ui bottom attached button">
+      <i class="paper plane outline icon"></i>
+      Envoyer un message
+    </div>
+    {% endif %}
+    
+</div>
+<div class="ui middle aligned animated list">
+<h3 class="ui header">Amis ({{ friends|length }})</h3>
+{% if friends|length == 0 %}
+<i>Rien à afficher</i>
+{% else %}
+  {% for friends in friends %}
+  <div onclick="window.location.href='{{ path('user_profile', {'id':friends.id}) }}'" class="item">
+    <img class="ui avatar image" src="{{ friends.profilepics.path }}">
+    <div class="content">
+      <div class="header">{{ friends.forename }} {{ friends.name }}</div>
+    </div>
+  </div>
+  {% endfor %}
+  
+</div>
+</div>
+{% endif %}
+
+{% endblock %}

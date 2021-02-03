@@ -18,29 +18,8 @@ class FilesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            // ->add('project', EntityType::class, [
-            //     // looks for choices from this entity
-            //     'class' => Project::class,
-            //     'attr' => ['class' => 'uk-select'],
-            //     // uses the User.username property as the visible option string
-            //     'choice_label' => 'title',
-            //     'label' => 'Lier le document au projet : ',
-            //     // used to render a select box, check boxes or radios
-            //     // 'multiple' => true,
-            //     // 'expanded' => true,
-            // ])
-            // ->add('task', EntityType::class, [
-            //     // looks for choices from this entity
-            //     'class' => Task::class,
-            //     // 'attr' => ['class' => 'uk-select'],
-            //     // uses the User.username property as the visible option string
-            //     'choice_label' => 'title',
-            //     // used to render a select box, check boxes or radios
-            //     // 'multiple' => true,
-            //     'expanded' => true,
-            // ])
             ->add('brochure', FileType::class, [
-                'label' => 'Veuillez séléctionner un document PDF (.pdf ou .xpdf)  ►  ',
+                'label' => 'Veuillez séléctionner un document PDF (.pdf ou .xpdf)',
 
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
@@ -48,7 +27,7 @@ class FilesType extends AbstractType
                 // make it optional so you don't have to re-upload the PDF file
                 // every time you edit the Product details
                 'required' => false,
-                'attr' => ['class' => 'uk-button uk-button-default'],
+                // 'attr' => ['class' => 'uk-button uk-button-default'],
                 // unmapped fields can't define their validation using annotations
                 // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [

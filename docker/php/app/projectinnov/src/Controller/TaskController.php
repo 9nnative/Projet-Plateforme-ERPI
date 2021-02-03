@@ -5,6 +5,7 @@ namespace App\Controller;
 use DateTime;
 use DateTimeZone;
 use App\Entity\Task;
+use App\Entity\User;
 use App\Form\TaskType;
 use App\Entity\Project;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class TaskController extends AbstractController
 {
@@ -46,8 +48,6 @@ class TaskController extends AbstractController
 
         $progress = $task->getProgress();
 
-
-
         if ($progress == 100){
             $task->setState(1);
             $manager->persist($task);
@@ -55,10 +55,14 @@ class TaskController extends AbstractController
             
         } 
 
-       $users = $task->getUser();
+       $userstask = $task->getUser();
+       $users = $this->getDoctrine()
+       ->getRepository(User::class)
+       ->findAll();
        
         return $this->render('tasks/detailTask.html.twig', [
             'task' => $task,
+            'userstask' => $userstask,
             'users' => $users,
             'project' => $project,
             'editMode' => $task->getId() !==null,
@@ -66,13 +70,35 @@ class TaskController extends AbstractController
 
     }
 
+    /**
+     * @Route("/addUser/{id}/toTask/{task_id}", name="add_user_to_task")
+     * @ParamConverter("user", options={"id" = "id"})
+     * @ParamConverter("task", options={"id" = "task_id"})
+     */
+    public function addUserToTask(User $user = null, Task $task = null, Request $request, EntityManagerInterface $manager)
+    {
 
+        if(!$task)
+        {
+            $this->addFlash('error', 'Ce projet n\'existe pas');
+        }
+        if(!$user)
+        {
+            $this->addFlash('error', 'Cette personne n\'existe pas : impossible de l\'ajouter au projet.');
+        }
 
+        $addusrtotask = $task->addUser($user);
+        $manager->persist($addusrtotask);
+        $manager->flush();
+        $this->addFlash('success', 'L\'utilisateur a bien été ajouté à la tâche.');
+
+        return $this->redirectToRoute('task_details', ['id' => $task->getId()]);
+    }    
     /**
      * @Route("/addTask", name="task_add")
      * @Route("/updateTask/{id}", name="task_update")
      */
-    public function addTask(Task $task = null, Request $request, EntityManagerInterface $manager, MailerInterface $mailer)
+    public function addTask(Task $task = null, Request $request, EntityManagerInterface $manager)
     {
 
         if(!$task)

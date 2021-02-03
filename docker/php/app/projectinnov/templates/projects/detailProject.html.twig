@@ -6,11 +6,7 @@
 
 <section class="global">
 {% if project.isprivate == true %}
-    <ul class="uk-breadcrumb">
-        <li><a href="{{ path('main') }}">Acceuil</a></li>
-        <li><a href="{{ path('allprojects') }}">Tous les projets</a></li>
-        <li><b><a href="#">Projet privé</a></b></li>
-    </ul>
+
 
                 <div class="uk-alert-warning" uk-alert>
         <a class="uk-alert-close" uk-close></a>
@@ -32,21 +28,22 @@
 {% if project.owner == app.user and project.isprivate == true %}
     <div class="uk-alert-success" uk-alert>
     <a class="uk-alert-close" uk-close></a>
-    <p>Ce projet privé vous appartient, vous pouvez le modifier. <a>Définir en public</a></p>
+    <p>Ce projet privé vous appartient, vous pouvez le modifier.</p>
     </div>
 
 <div class="uk-card uk-card-default uk-card-body">
 <article class="uk-article">
-    <ul class="uk-breadcrumb">
-        <li><a href="{{ path('main') }}">Acceuil</a></li>
-        <li><a href="{{ path('allprojects') }}">Tous les projets</a></li>
-        <li><b><a href="#">{{ project.title }}</a></b></li>
-    </ul>
+
 
     <h1 class="uk-article-title"><a class="uk-link-reset" href="">{{ project.title }}</a></h1>
 
     <progress class="uk-progress" value="{{ project.progress }}" max="100"></progress>
-
+<div class="ui indicating progress" data-value="1" data-total="200" id="example5">
+  <div class="bar">
+    <div class="progress"></div>
+  </div>
+  <div class="label">Waiting for you to press button</div>
+</div>
     <p class="uk-article-meta">Rédigé par <b>{{ project.owner.forename }} {{ project.owner.name }}</b> le {{ project.createdat|date('d/m/Y') }}.
 
     
@@ -159,8 +156,30 @@
 
      <h3>Participants <span class="uk-label">{{ nbfollows }}</span></h3>
      <ul class="uk-list">
+
     {% for prjfollowed in prjfollowed %}
-    <li>{{ prjfollowed.name }} {{ prjfollowed.forename }} </li> 
+    <li>
+    {% if prjfollowed.type.id == 1 %}
+    <a href="{{ path('user_profile', {'id':prjfollowed.id}) }}" class="ui image label">
+    {% elseif prjfollowed.type.id == 2 %}
+    <a href="{{ path('user_profile', {'id':prjfollowed.id}) }}" class="ui blue image label">
+    {% elseif prjfollowed.type.id == 3 %}
+    <a href="{{ path('user_profile', {'id':prjfollowed.id}) }}" class="ui orange image label">
+    {% elseif prjfollowed.type.id == 4 %}
+    <a href="{{ path('user_profile', {'id':prjfollowed.id}) }}" class="ui green image label">
+    {% elseif prjfollowed.type.id == 5 %}
+    <a href="{{ path('user_profile', {'id':prjfollowed.id}) }}" class="ui green image label">
+    {% endif %}
+
+   {{ prjfollowed.name }} {{ prjfollowed.forename }}
+
+    <div class="detail">{{ prjfollowed.type.name }}</div>
+
+    {% if project.owner == prjfollowed %} 
+    <a uk-tooltip ="Créateur du projet" uk-icon="star"></a>
+    {% endif %}
+    </a>
+    </li>
     {% endfor %}
     </ul>
 
@@ -246,19 +265,14 @@
 
 
 {% elseif project.isprivate == false %}
-    <ul class="uk-breadcrumb">
-        <li><a href="{{ path('main') }}">Acceuil</a></li>
-        <li><a href="{{ path('allprojects') }}">Tous les projets</a></li>
-        <li><a href="#">{{ project.title }}</a></li>
-    </ul>
 
 {% if project.owner == app.user %}
     <div class="uk-alert-success" uk-alert>
     <a class="uk-alert-close" uk-close></a>
     <p>Ce projet public vous appartient, vous pouvez le modifier.</p>
-    <p><a>Définir le projet en privé</a></p>
     </div>
 {% endif %}
+
 <div class="uk-card uk-card-default uk-card-body ">
 <article class="uk-article">
 
@@ -288,9 +302,12 @@
 
  
     <div class="ui segment">
-    <h4 class="ui header">Progression</h4>
-    <progress class="uk-progress" value="{{ project.progress }}" uk-tooltip ="title:Progression : {{ project.progress }} %"max="100"></progress>
-    </div>
+<h4 class="ui header">Progression</h4>
+<div class="ui teal indicating progress" uk-tooltip ="title:{{ project.progress }} %" data-percent="{{ project.progress }}" id="example1">
+  <div class="bar"></div>
+</div>
+</div>
+
    
 
     <div class="ui segment">
@@ -428,33 +445,28 @@
 {{ form_end(formFile) }}
     </div>
     </div> 
-    <hr>
-
 
 
 <div class="ui segment">
      <h3 id="participants">Participants <span class="uk-label">{{ nbfollows }}</span></h3>
-
     
      <ul class="uk-list">
-
-
 
     {% for prjfollowed in prjfollowed %}
     <li>
     {% if prjfollowed.type.id == 1 %}
-    <a class="ui image label">
+    <a href="{{ path('user_profile', {'id':prjfollowed.id}) }}" class="ui image label">
     {% elseif prjfollowed.type.id == 2 %}
-    <a class="ui blue image label">
+    <a href="{{ path('user_profile', {'id':prjfollowed.id}) }}" class="ui blue image label">
     {% elseif prjfollowed.type.id == 3 %}
-    <a class="ui orange image label">
+    <a href="{{ path('user_profile', {'id':prjfollowed.id}) }}" class="ui orange image label">
     {% elseif prjfollowed.type.id == 4 %}
-    <a class="ui green image label">
+    <a href="{{ path('user_profile', {'id':prjfollowed.id}) }}" class="ui green image label">
     {% elseif prjfollowed.type.id == 5 %}
-    <a class="ui green image label">
+    <a href="{{ path('user_profile', {'id':prjfollowed.id}) }}" class="ui green image label">
     {% endif %}
 
-    {{ prjfollowed.name }} {{ prjfollowed.forename }}
+   {{ prjfollowed.name }} {{ prjfollowed.forename }}
 
     <div class="detail">{{ prjfollowed.type.name }}</div>
 
@@ -535,7 +547,7 @@
             <div class="uk-position-top-right uk-position-small uk-hidden-hover">
                 <a uk-tooltip="Répondre" href="#" uk-icon="icon: reply"></a>
                 <a uk-tooltip="Modifier" href="#" uk-icon="icon: pencil"></a>
-                <a uk-tooltip="Supprimer" href="{{ path('remove_comment', {'id':comments.id}) }}" uk-icon="icon: trash"></a></div>
+                <a uk-tooltip="Supprimer" href="{{ path('remove_comment', {'id':comments.id, 'id_project':project.id}) }}" uk-icon="icon: trash"></a></div>
             </div>
         </div>
         {% endfor %}
@@ -557,8 +569,18 @@
 </div>
 </article>
 </div>
-<br>
-<br>
+<script>
+$('.rapid.example .ui.progress')
+  .progress({
+    duration : 200,
+    total    : 200,
+    text     : {
+      active: '{value} of {total} done'
+    }
+  })
+;
+$('#example1').progress();
+</script>
 {% endif %}
 
 </section>
