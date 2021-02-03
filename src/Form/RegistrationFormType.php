@@ -29,21 +29,14 @@ class RegistrationFormType extends AbstractType
                 'attr' => ['class' => 'form-control uk-input'] 
             ])
             ->add('type', EntityType::class, [
-                // looks for choices from this entity
                 'class' => Type::class,
                 'attr' => ['class' => 'form-control uk-select'],
-                // uses the User.username property as the visible option string
                 'choice_label' => 'name',
-                // used to render a select box, check boxes or radios
-                // 'multiple' => true,
-                // 'expanded' => true,
             ])
             ->add('email', EmailType::class, [
                 'attr' => ['class' => 'form-control uk-input']
             ])
             ->add('plainPassword', RepeatedType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'type' => PasswordType::class,
                 'first_options'  => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmation du mot de passe'],

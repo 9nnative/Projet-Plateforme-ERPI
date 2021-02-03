@@ -8,7 +8,9 @@
 
 
 
-        {% for label, messages in app.flashes %}
+
+
+                    {% for label, messages in app.flashes %}
             <div class="uk-alert-primary" uk-alert>
                 {% for message in messages %}
                     <div class="flash-{{ label }}">
@@ -18,22 +20,21 @@
             </div>
         {% endfor %}
 
-        
-                <ul class="uk-breadcrumb">
-                    <li><a href="{{ path('main') }}">Acceuil</a></li>
-                    <li><b><a href="{{ path('allprojects') }}">Tous les projets</a></b></li>
-                </ul>
+
+
          <div class="uk-child-width-1-3@m" >
 
+
             {% for project in projects %}
+            
             {% if project.isprivate == 0 or project.owner == app.user %}
                      
-                     <div class="uk-card uk-card-default uk-card-body uk-width-3-4 uk-card-hover ">
+                     <div class="uk-card uk-card-default uk-card-body uk-width-1-1 uk-card-hover ">
             
                      <h3 class="uk-card-title uk-heading-line">
                      <span>
 
-                     {{ project.title }}
+                     {{ project.title|purify }}
                      
                      <span>
                      </h3>
@@ -44,36 +45,77 @@
                             Publié par <a>{{ project.owner.forename }} {{ project.owner.name }}</a></li>
                             le <b>{{ project.createdat|date('d/m/Y') }}</b>. Mot(s) clé(s) :
                            
-                            <b>{{ project.theme }}</b>
-
-                        </p>
-                            <p>{{project.summary}}</p>
-                                <div class="uk-grid-small uk-child-width-auto" uk-grid>
+                            <b>{{ project.theme|purify }}</b>
                                 <div>
                                 {% if project.owner == app.user and project.isprivate == 1   %}
-                                <div uk-tooltip="Ce projet privé vous appartient <br> Il n'est pas visible par les autres utilisateurs"><span class="uk-label uk-label-danger right">Privé</span> <i class="eye slash icon"></i></div>
+                                <span uk-tooltip="Ce projet privé vous appartient <br> Il n'est pas visible par les autres utilisateurs" class="uk-label uk-label-danger right">Privé</span> <i class="eye slash icon"></i>
                                 {% elseif project.isprivate == 0 %}
                                 <span uk-tooltip="Projet public" class="uk-label uk-label-success right">Public</span> <i <div uk-tooltip="Ce projet est visible par tous les utilisateurs du site" class="eye icon"></i>
                                 {% endif %}
-                                </div>
-                                    <div>
-                                        <a class="uk-button uk-button-text"  href="{{ path('followproject', {'id':project.id}) }}">Suivre <i class="thumbs up icon"></i></a>
-                                    </div>
-                                    <div>
-                                        <a class="uk-button uk-button-text"  href="{{ path('project_details', {'id':project.id}) }}">Voir plus <i class="folder open outline icon"></i></a>
-                                    </div>
-                                    
+                                </div>        
+                        </p>
+                            <p>{{project.summary|purify }}</p>
+                            <br>
+                                <div class="uk-grid-small uk-child-width-auto" uk-grid>
+
+
+                                    <button  onclick="window.location.href='{{ path('project_details', {'id':project.id}) }}'" class="ui basic button">
+                                    <i class="icon folder open outline"></i>
+                                    Voir plus
+                                    </button>
+
+                                    {% if project.owner == app.user or app.user.isadmin == 1 %}
+
+
+<div onclick="window.location.href='{{ path('project_update', {'id':project.id}) }}'" class="ui secondary basic vertical animated button" tabindex="0">
+  <div class="hidden content">Éditer</div>
+  <div class="visible content">
+    <i class="icon edit outline"></i>
+  </div>
+</div>
+
+<div onclick="window.location.href='{{ path('project_remove', {'id':project.id}) }}'" class="ui red basic vertical animated button" tabindex="0">
+  <div class="hidden content">Détruire</div>
+  <div class="visible content">
+    <i class="icon trash alternate"></i>
+  </div>
+</div>
+
+
+                                    {% endif %}
+
+
+
                             </div>
                         
                         </div>
 
-                             <br>     
+                             <br>    
+
+
+
+
+                             {# MODALS PROJECT #}
+
                         {% endif %}
-                        
+
+
 
                         {% endfor %}
 
-            
+
 </section>
+
+
+
+        {# {% block javascripts %}
+
+
+
+        
+{% endblock %} #}
+
+
+
 
 {% endblock %}

@@ -3,7 +3,8 @@
 {% block title %}Connexion | Plateforme ERPI{% endblock %}
 
 {% block body %}
-    <section class="global nomargin loginsize">
+
+
  {% if app.user %}
 
         <div uk-alert>
@@ -13,71 +14,56 @@
             Il semble que vous êtes déjà connecté avec l'adresse {{ app.user.username }} <a href="{{ path('app_logout') }}">Se déconnecter</a>
         </div>
 </div>
+
     {% endif %}
+
     {% if not app.user %}
-
-<br>
-<h1 class="uk-heading-large uk-text-center"><span><i class="sign in alternate icon"></i><span></h1>
-<br>
-
-<div class="uk-card uk-alert-success cardlogin" uk-alert>
-    <a class="uk-alert-close" uk-close></a>
-    <p>Pas encore inscrit ? <a href="{{ path('app_register') }}">C'est par ici !</a></p>
-</div>
-<br>
-<form method="post">
-        <div class="uk-card uk-card-default uk-card-hover uk-card-body centerlogin cardlogin">
-
-            <h3 class="uk-card-title">Connexion</h3>
-            <p></p>
-                       {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-        
-        <form>
-        <div class="uk-margin">
-        <div class="uk-inline">
-            <span class="uk-form-icon" uk-icon="icon: user"></span>
-            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control uk-input" required autofocus>
-        </div>
-    </div>
-
-    <div class="uk-margin">
-        <div class="uk-inline">
-            <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-            <input type="password" name="password" id="inputPassword" class="form-control uk-input" required>
-        </div>
-    </div>
  
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Sauvegarder mes identifiants
-            </label>
+
+
+<div class="ui attached message">
+  <div class="header">
+    <i class="handshake outline icon"></i> Heureux de vous revoir ! 
+  </div>
+  <p>Renseignez les champs ci-dessous afin de pouvoir vous connecter.</p>
+</div>
+
+<form method ="post" class="ui form attached fluid segment">
+
+          {% if error %}
+              <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+          {% endif %}    
+              
+  <div class="two fields">
+    <div class="field">
+    <label>E-mail</label>
+                <span class="uk-form-icon"></span>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" required autofocus>
+    </div>
+    <div class="field">
+    <label>Mot de passe</label>
+                <span class="uk-form-icon uk-form-icon-flip"></span>
+                <input type="password" name="password" id="inputPassword" required>
+    </div>
+    </div>
+        <div class="inline field">
+          <div class="ui checkbox">
+            <input type="checkbox" name="_remember_me">
+            <label>Sauvegarder mes identifiants</label>
+          </div>
         </div>
-        
-        <div class="uk-margin center">
-    <button class="btn uk-button uk-button-default center" type="submit">
-        Se connecter
-    </button>
+  <button type="submit" class="ui submit button">Se connecter</button>
+
+      <input type="hidden" name="_csrf_token"
+            value="{{ csrf_token('authenticate') }}"
+      >
 
 </form>
+<div class="ui bottom attached warning message">
+  <i class="user plus icon"></i>
+  Pas encore inscrit ? <a href="{{ path('app_register') }}">C'est par ici !</a>
+</div>
 
-    </div>
-    
+</div>
 {% endif %}
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-    #}
-
-    </div>
-    
-</form>
-
-</section>
 {% endblock %}

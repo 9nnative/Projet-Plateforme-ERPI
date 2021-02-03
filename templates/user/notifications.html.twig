@@ -1,0 +1,60 @@
+{% extends 'base.html.twig'%}
+
+{% block title %}Notifications - Plateforme ERPI{% endblock %}
+
+{% block body %}
+
+<section class="global">
+         {% for label, messages in app.flashes %}
+            <div class="uk-alert-primary" uk-alert>
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                </div>
+                {% endfor %}
+
+<br>
+
+<div class="uk-card uk-card-default uk-card-hover uk-card-body cardlogin">
+<h1 class="ui header">Notifications ({{ notifs|length }})</h1>
+{% if notifs is not empty %}
+{% for notifs in notifs %}
+{% if notifs.type == "newmsg" %}
+<div class="ui teal message">
+  <i onclick="window.location.href='{{ path('notification_remove', {'id':notifs.id}) }}'" class="close icon"></i>
+  <div class="header">
+  <i class="comments outline icon"></i>
+    {{ notifs.content }}
+  </div>
+  <p>{{ notifs.date|format_datetime('full', 'short', locale='fr') }}</p>
+</div>
+{% elseif notifs.type == "newprj" %}
+<div class="ui floating positive message">
+  <i onclick="window.location.href='{{ path('notification_remove', {'id':notifs.id}) }}'" class="close icon"></i>
+  <div class="header">
+  <i class="paper plane icon"></i>
+    {{ notifs.content }}
+  </div>
+  <p>{{ notifs.date|format_datetime('full', 'short', locale='fr') }}</p>
+
+</div>
+{% elseif notifs.type == "newmember" %}
+<div class="ui floating positive message">
+  <i onclick="window.location.href='{{ path('notification_remove', {'id':notifs.id}) }}'" class="close icon"></i>
+  <div class="header">
+  <i class="user plus icon"></i>
+    {{ notifs.content }}
+  </div>
+  <p>{{ notifs.date|format_datetime('full', 'short', locale='fr') }}</p>
+
+</div>
+{% endif %}
+{% endfor %}
+{% else %}
+<br>
+Aucune notification à afficher pour le moment.
+{% endif %}
+{% endblock %}
+

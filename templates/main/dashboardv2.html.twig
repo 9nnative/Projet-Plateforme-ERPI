@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard - Plateforme ERPI{% endblock %}
+
+{% block body %}
+
+<div class="uk-card uk-card-default uk-card-body">
+<h1 class="ui header">Dashboard</h1>
+<div class="ui top attached tabular menu">
+  <a class="active item" data-tab="first">Projets auxquels je participe</a>
+  <a class="item" data-tab="second">Mes tâches</a>
+  <a class="item" data-tab="third">Tâches créées</a>
+</div>
+<div class="ui bottom attached active tab segment" data-tab="first">
+                  {% for prjfollowed in prjfollowed %}
+                <div class="ui segment">
+                          <dt><a href="{{ path('project_details', {'id':prjfollowed.id}) }}">{{ prjfollowed.title }}</a></dt>
+                          <dd>{{ prjfollowed.summary }}</a></dd>
+                </div>
+                {% endfor %}
+</div>
+<div class="ui bottom attached tab segment" data-tab="second">
+  {% for taskattr in taskattr %}
+  <div class="ui segment">
+ <dt><a href="{{ path('task_details', {'id':taskattr.id}) }}">{{ taskattr.title }}</a></dt>
+    <dd>{{ taskattr.content }}</a></dd>
+    <dd>
+       {% if taskattr.state == "inprogress" %}
+     <span class="uk-label uk-label-warning" uk-tooltip="title: État de la tâche : en cours">En cours</span>
+     {% endif %}
+         {% if taskattr.state == "cancelled" %}
+     <span class="uk-label uk-label-danger" uk-tooltip="title: État de la tâche : annulée">Annulée</span>
+     {% endif %}
+         {% if taskattr.state == "done" %}
+     <span class="uk-label uk-label-success" uk-tooltip="title: Success ! Tâche terminée." ><span uk-icon="icon: check"></span></span>
+     {% endif %}
+         {% if taskattr.state == "none" %}
+     <span class="uk-label">Aucun état</span>
+     {% endif %}
+    </dd>
+    <br>
+    <dd><progress class="uk-progress" uk-tooltip ="title:Progression : {{ taskattr.progress }} %" value="{{ taskattr.progress }}" max="100"></progress></dd>
+    </div>
+    {% endfor %}
+
+</div>
+<div class="ui bottom attached tab segment" data-tab="third">
+   {% for taskself in taskself %}
+  <div class="ui segment">
+    <dt><a href="{{ path('task_details', {'id':taskself.id}) }}">{{ taskself.title }}</a></dt>
+    <dd>{{ taskself.content }}</a></dd>
+    <dd>
+    {% if taskself.state == "inprogress" %}
+     <span class="uk-label uk-label-warning">En cours</span>
+     {% endif %}
+         {% if taskself.state == "cancelled" %}
+     <span class="uk-label uk-label-danger">Annulée</span>
+     {% endif %}
+         {% if taskself.state == "done" %}
+     <span class="uk-label uk-label-success" uk-tooltip="title: Success ! Tâche terminée."><span uk-icon="icon: check"></span></span>
+     {% endif %}
+         {% if taskself.state == "none" %}
+     <span class="uk-label">Aucun état</span>
+     {% endif %}
+    </dd>
+    <br>
+
+<div class="uk-grid-match uk-grid-small uk-text-center" uk-grid>
+    <div class="uk-width-1-2@m">
+  
+
+    <dd><ul class="uk-iconnav">
+    <p class="uk-text-muted">Actions :</p>
+    <li><a href="#" uk-tooltip="title: Attribuer cette tâche à ..." uk-icon="icon: plus"></a></li>
+        <li><a href="#" uk-tooltip="title: État" uk-icon="icon: bolt"></a></li>
+    <li><a href="{{ path('task_details', {'id':taskself.id}) }}" uk-tooltip="title: Détails" uk-icon="icon: copy"></a></li>
+    <li><a href="{{ path('task_update', {'id': taskself.id}) }}" uk-tooltip="title: Édition" uk-icon="icon: file-edit"></a></li>
+    <li><a  href="{{ path('task_remove', {'id': taskself.id}) }}" uk-tooltip="title: Supprimer" uk-icon="icon: trash"></a></li>
+</ul></dd>
+ 
+
+    </div>
+
+<div class="uk-width-1-2@m">
+<progress uk-tooltip ="title:Progression : {{ taskself.progress }} %" value="{{ taskself.progress }}" class="uk-progress" value="{{ taskself.progress }}" max="100"></progress>
+</div>
+
+       </div>
+</div>
+    {% endfor %}
+</div>
+
+</div>
+</section>
+
+<script>
+$('.menu .item')
+  .tab()
+;
+</script>
+
+{% endblock %}

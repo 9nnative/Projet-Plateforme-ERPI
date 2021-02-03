@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html class ="theme">
     <head>
         <meta charset="UTF-8">
@@ -7,135 +8,10 @@
         {% block stylesheets %}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/css/uikit.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
-        <link rel="stylesheet" href="https://github.com/9nnative/Projet-Plateforme-ERPI/blob/master/public/css/stylesheet.css"/>
+        <link rel="stylesheet" href="{{ asset('css/stylesheet.css') }}"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/box-shadows-css@1/box-shadows.min.css">
         <link id="u-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
         {% endblock %}
-    </head>
-
-
-
-    <body>
-    {% if app.user %}
-        {# PC #}          
-</div>       
-<div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky"> 
-<div class="uk-position-top-left navbar navbarpc">
-    <ul class="uk-nav-primary uk-nav-parent-icon" uk-nav>
-        <li class="uk-active"><a href="{{ path('main') }}">Accueil</a></li>
-        <li class="uk-parent">
-            <a href="#">Projets</a>
-            <ul class="uk-nav-sub">
-                <li><a uk-icon="plus-circle" href="{{ path('project_add') }}">Créer un nouveau projet </a></li>
-                <li><a uk-icon="list" href="{{ path('allprojects') }}">Voir tous les projets </a></li>
-            </ul>
-        </li>
-        <li class="uk-parent">
-            <a href="">Dashboard</a>
-            <ul class="uk-nav-sub">
-                <li><a uk-icon="nut" href="{{ path('dashboard') }}">Mon dashboard </a></li>
-            </ul>
-        </li>
-                <li class="uk-parent">
-            <a href="">Mon profil</a>
-            <ul class="uk-nav-sub">
-            <br>
-            <li>    
-            
-                        <div class="uk-width-auto center">
-                                    <img width="60" height="60" src="{{ app.user.profilepics.path }}">
-                                </div>
-                                
-                                </li>
-                <br>
-               <li class="uk-active"><p>{{ app.user.forename }} <b>{{ app.user.name }}</b></p></li>
-               <br>
-                <li><a uk-icon="icon:  comment" href="{{ path('allmessages') }}">Conversations </a> </li>
-                <li><a uk-icon="icon: file-edit" href="{{ path('edituser') }}">Modifier le profil </a></li>
-                <li><a uk-icon="icon:  lifesaver" href="{{ path('help') }}">Besoin d'aide ? </a></li>
-                <br>
-                <li></a> <a uk-icon="icon: sign-out" href="{{ path('app_logout') }}">Se déconnecter </a></li>  
-            </ul>
-        </li>
-                
-        <li>       
-            <div class="uk-margin">
-                <form class="uk-search uk-search-default">
-                    <span class="uk-search-icon-flip" uk-search-icon></span>
-                    <input class="uk-search-input" type="search" placeholder="Rechercher ...">
-                </form>
-            </div>
-        </li>
-        <a uk-tooltip="Voir les notes de patchs et les futures mises à jour"href="{{ path('versions') }}"><span  class="uk-label uk-label-success labelstate">Bêta 0.1.7</span></a>
-        <span  class="uk-label uk-label-success pc">Version PC <span uk-icon="icon: desktop"></span></span>
-        
-        <div class="uk-margin"></div>
-
-        {# <li><img width="161" height="56" src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Logo_Universit%C3%A9_de_Lorraine.svg"></li> #}
-    </ul>
-</div>
-</div>
-
-
-<div id="modnavmobile" class="uk-modal-full modalmobilenav" uk-modal>
-    <div class="uk-modal-dialog">
-        <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
-        <div class="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle" uk-grid>
-            <div class="uk-background-cover" style="background-image: url('images/photo.jpg');" uk-height-viewport></div>
-            <div class="uk-padding-large">
-                <h1>Headline</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky" class="mobilenav">
-<br> 
-<div class="uk-inline">
-    <button class="uk-button uk-width-1-1 uk-margin-small-bottom noround"><span uk-icon="icon: menu; ratio: 2"></span></button>
-    <div uk-dropdown>
-        <ul class="uk-nav uk-dropdown-nav scrollbar">
-            <li class="uk-parent">
-            <a href="{{ path('main') }}"><b>Acceuil</b></a>
-                <li><a href="{{ path('project_add') }}">Créer un nouveau projet</a></li>
-                <li><a href="{{ path('allprojects') }}">Voir tous les projets </a></li>
-        </li>
-
-
-
-
-            <li class="uk-nav-divider"></li>
-            <li><a href="{{ path('dashboard') }}">Mon dashboard </a></li>
-
-            <li>    
-            <p class="uk-text-italic">Connecté en tant que ...</p>
-                        <div class="uk-width-auto center">
-                                    <img width="60" height="60" src="{{ app.user.profilepics.path }}">
-                                </div>
-                                
-                                </li>
-                <br>
-                
-               <li class="uk-active"><p>{{ app.user.forename }} <b>{{ app.user.name }}</b></p></li>
-               <br>
-                <li><a uk-icon="icon:  comment" href="{{ path('allmessages') }}">Conversations </a> </li>
-                <li><a uk-icon="icon: file-edit" href="{{ path('edituser') }}">Modifier le profil </a></li>
-                <li><a uk-icon="icon:  lifesaver" href="{{ path('help') }}">Besoin d'aide ? </a></li>
-                <br>
-                <li></a> <a uk-icon="icon: sign-out" href="{{ path('app_logout') }}">Se déconnecter </a></li>  
-            </ul>
-        </li>
-            
-    </div>
-</div>
-</div>
-{% endif %}
-
-        {% block body %}
-
-        {% endblock %}
-
         {% block javascripts %}
         <script
         src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -144,7 +20,147 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit-icons.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script> 
+$('.ui.sticky')
+  .sticky({
+    context: '#navbar'
+  })
+;
+
+
+$('#tglremoveProject').click(function(){      
+            $('.ui.basic.modal.deleteProject')
+            .modal('show')
+            ;
+});
+
+$('#tglCGU').click(function(){      
+            $('.ui.modal.cgu')
+            .modal('show')
+            ;
+});
+
+// $('.ui.checkbox')
+//   .checkbox()
+// ;
+
+
+</script>
         {% endblock %}
+    </head>
+
+
+
+    <body>
+    {% if app.user %}
+    <div id ="navbar" class="ui attached stackable menu ui sticky" >
+  <div class="ui container ">
+    <a href="{{ path('main') }}" class="item">
+      <i class="home icon"></i> Accueil
+    </a>
+    <div class="ui simple dropdown item">
+    <i class="grid layout icon"></i>
+      Menu
+      
+      <div class="menu">
+        <a href="{{ path('project_add') }}" class="item"><i class="plus square icon"></i> Créer un nouveau projet </a>
+        <a href="{{ path('allprojects') }}" class="item"><i class="list icon"></i> Voir tous les projets</a>
+        <a href="{{ path('dashboard') }}" class="item"><i class="qrcode icon"></i> Mon dashboard </a>
+      </div>
+    </div>
+
+    <a href="{{ path('allmessages') }}" class="item">
+      <i class="comment outline icon"></i> Messages
+    </a>
+    <div class="ui simple dropdown item">
+      Mon profil
+      <i class="dropdown icon"></i>
+      <div class="menu">
+        <a href="{{ path('user_profile', {'id':app.user.id}) }}" class="item"><i class="user icon"></i> Voir mon profil</a>
+        <a href="{{ path('edituser') }}" class="item"><i class="edit icon"></i> Éditer le profil</a>
+        <a href="{{ path('help') }}" class="item"><i class="help icon"></i> Besoin d'aide ? </a>
+        <a id="tgldisconnect" class="ui toggle item"><i class="log out icon"></i> Se déconnecter</a>
+      </div>
+    </div>
+        <div onclick="window.location.href='{{ path('notifications') }}'" class="ui simple dropdown item">
+            <i class="bell outline icon"></i>
+        
+
+        </div>
+    <div class="right item">
+
+      <div class="ui mini image">
+        <img src="https://www.univ-lorraine.fr/sites/www.univ-lorraine.fr/files/node_files/publics/users/martin38/2013/10/isotype_ul.jpg">
+      </div>
+
+            <div class="ui mini image">
+        <img src="https://empp.univ-lorraine.fr/files/2020/01/ERPI_Logo.png">
+      </div>
+    </div>
+    </div>
+  </div>
+        {# PC #}          
+</div>       
+
+
+<div class="ui basic modal disconnect">
+  <div class="ui icon header">
+    <i class="sign out alternate icon"></i>
+    Confirmation
+  </div>
+  <div class="content center">
+    <p>Voulez-vous vraiment vous déconnecter ?</p>
+  </div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button">
+      <i class="remove icon"></i>
+      Non
+    </div>
+    <div id="tgldisconnect" class="ui green ok inverted button" onclick="window.location.href='{{ path('app_logout') }}'">
+     <i class="checkmark icon"></i>
+      Oui
+    </div>
+  </div>
+</div>
+
+<script>
+$('#tgldisconnect').click(function(){      
+            $('.ui.basic.modal.disconnect')
+            .modal('show')
+            ;
+});
+</script>
+{% endif %}
+
+<div class="ui container">
+<br>
+        {% for label, messages in app.flashes %}
+            <div class="uk-alert-primary" uk-alert>
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        {% block body %}
+
+        {% endblock %}
+</div>
+        
     </body>
 
 </html>

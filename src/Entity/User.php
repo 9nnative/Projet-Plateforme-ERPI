@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"}, message="Il y a déjà un compte avec cette adresse-mail.")
  */
 class User implements UserInterface
 {
@@ -131,6 +131,26 @@ class User implements UserInterface
      */
     private $tickets;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isadmin;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="users")
+     */
+    private $friend;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="friend")
+     */
+    private $users;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="usertarget", orphanRemoval=true)
+     */
+    private $notifications;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
@@ -144,6 +164,9 @@ class User implements UserInterface
         $this->conversations = new ArrayCollection();
         $this->conversationsbis = new ArrayCollection();
         $this->tickets = new ArrayCollection();
+        $this->friend = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -615,5 +638,102 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function getIsadmin(): ?bool
+    {
+        return $this->isadmin;
+    }
+
+    public function setIsadmin(?bool $isadmin): self
+    {
+        $this->isadmin = $isadmin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getFriend(): Collection
+    {
+        return $this->friend;
+    }
+
+    public function addFriend(self $friend): self
+    {
+        if (!$this->friend->contains($friend)) {
+            $this->friend[] = $friend;
+        }
+
+        return $this;
+    }
+
+    public function removeFriend(self $friend): self
+    {
+        $this->friend->removeElement($friend);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(self $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addFriend($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(self $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeFriend($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setUsertarget($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getUsertarget() === $this) {
+                $notification->setUsertarget(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(){
+        return $this->name." ".$this->forename;
     }
 }

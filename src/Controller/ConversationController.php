@@ -6,6 +6,7 @@ use DateTimeZone;
 use App\Entity\Message;
 use App\Form\MessageType;
 use App\Entity\Conversation;
+use App\Entity\Notification;
 use App\Form\ConversationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,16 +40,27 @@ class ConversationController extends AbstractController
                 if($this->getUser() == $conversation->getRecipient()){
 
                     $message->setSentTo($conversation->getOwner());
+
                 }else{
                     $message->setSentTo($conversation->getRecipient());
                 }
+            
                 $conversation->setLastMessage($message);
+                $notification = new Notification();
+                $sender = $this->getUser()->getForename();
+                $notification->setContent("Nouveau message de $sender dans votre conversation");
+                $notification->setType("newmsg");
                 $message->setConversation($conversation);
                 $tz_object = new DateTimeZone('Europe/Paris');
                 $date = new \DateTime('now');
                 $date->setTimezone($tz_object);
                 $message->setSentAt($date);
+
+                $notification->setDate($date);
+                $notification->setUsertarget($message->getSentTo());
+
                 $manager->persist($message);
+                $manager->persist($notification);
                 $manager->flush();
 
                 header("Refresh:0");

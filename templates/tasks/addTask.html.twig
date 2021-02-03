@@ -5,11 +5,6 @@
 {% block body %}
 <section class="global">
 
-                <ul class="uk-breadcrumb">
-                    <li><a href="{{ path('main') }}">Acceuil</a></li>
-                    <li><a href="{{ path('dashboard') }}">Dashboard</a></li>
-                    <li><a href="#">Modifier une tâche</a></li>
-                </ul>
         {% for label, messages in app.flashes %}
             <div class="uk-alert-primary" uk-alert>
                 {% for message in messages %}

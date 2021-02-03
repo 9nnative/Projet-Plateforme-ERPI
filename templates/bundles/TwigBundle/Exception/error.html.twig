@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur 500 :({% endblock %}
+
+{% block body %}
+    <h1><i class="bug icon"></i> Erreur 500 : C'est de notre faute !</h1>
+    <p>Une erreur innatendue est arrivée, côté serveur.</p>
+    <a href="{{ path('main') }}" class="ui primary button">
+     Retourner à l'acceuil
+    </a>
+    <a href="{{ path('add_ticket') }}" class="ui primary button">
+     Reporter un bug
+    </a>
+{% endblock %}

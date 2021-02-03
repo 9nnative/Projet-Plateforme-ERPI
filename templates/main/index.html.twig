@@ -3,42 +3,152 @@
 {% block title %}Accueil - Plateforme ERPI{% endblock %}
 
 {% block body %}
-<section class="global">
+
+
+
+<div class="ui top attached menu">
+
+<div class="item">
+  <div class="field">
+    <div id="ui-user-search" class="ui input search">
+      <div class="ui icon input">
+        <input class="prompt" type="text" placeholder="Rechercher ...">
+        <i class="users icon"></i>
+      </div>
+      <div class="results"></div>
+    </div>
+  </div>
+</div>
+
 <h2 class="ui center aligned icon header">
-  <i class="home icon"></i>
   <div class="content">
-    Acceuil
+    Accueil
     <div class="sub header">Plateforme de gestion ERPI</div>
   </div>
 </h2>
+
+  <div class="right menu">
+    <div class="ui right aligned category search item">
+
+    </div>
+  </div>
+  
+</div>
+
+<div class="ui bottom attached segment">
+<div class="ui stackable labeled icon menu">
+  <a href ="{{ path('project_add') }}"class="item">
+    <i class="plus circle icon"></i>
+    Créer un projet
+  </a>
+  <a href ="{{ path('allprojects') }}" class="item">
+    <i class="list ul icon"></i>
+    Voir tous les projets
+  </a>
+  <a href ="{{ path('dashboard') }}" class="item">
+    <i class="video play icon"></i>
+    Mon Dashboard
+  </a>
+    <a href ="{{ path('allmessages') }}" class="item">
+    <i class="comment outline icon"></i>
+    Conversations
+  </a>
+    <a href ="{{ path('addticket') }}" class="item">
+    <i class="bug icon"></i>
+    Rapporter un bug
+  </a>
+  {% if app.user.isadmin == 1 %}
+    <a href ="{{ path('adminpanel') }}" class="item">
+    <i class="universal access icon"></i>
+    Panel administration
+  </a>
+  {% endif %}
+</div>
+
+<h2 class="ui header">Actualités</h2>
+{% if actualities is empty %}
+<p>Rien à afficher</p>
+{% else %}
+<div class="ui feed">
+<div class="ui items">
+{% for actualities in actualities %}
+<div class="item">
+<div class="content">
+<div class="description">
+<p>{{ actualities.content }}</p>
+</div>
+<div class="extra">{{ actualities.date|date('d/m/Y') }}</div>
 <br>
-
-
-<div uk-scrollspy="target: > div; cls: uk-animation-fade; delay: 100">
-<div class="uk-child-width-1-2@s" uk-grid>
-    <div>
-        <div class="uk-card uk-card-hover uk-light blue uk-padding">
-            <h3><span uk-icon="plus-circle"></span> Créer un nouveau projet</h3>
-            <p>Créez un projet, affectez-y des mots clés et ajoutez-y des collaborateurs.<br>  Il sera possible de le modifier par la suite.</p>
-            <a href ="{{ path('project_add') }}" class="uk-button uk-button-default">Je créé mon projet</a>
-        </div>
-    </div>
-    <div>
-        <div class="uk-card uk-card-hover uk-dark uk-background-muted uk-padding">
-            <h3><span uk-icon="thumbnails"></span> Accéder à mon espace</h3>
-            <p>Accédez à votre espace personnel, avec suivi des projets et tâches auxquelles vous avez été affectées.</p>
-            <a href ="{{ path('dashboard') }}" class="uk-button uk-button-default">Mon dashboard</a>
-        </div>
-    </div>
-        <div>
-        <div class="uk-card uk-card-hover uk-dark uk-background-muted uk-padding">
-            <h3><span uk-icon="file-text"></span> Ajouter un ticket</h3>
-            <p>Ce site est en constante construction. Reportez un bug, ou faites une suggestion, cela aidera au développement de celui-ci.</p>
-            <a href ="{{ path('addticket') }}" class="uk-button uk-button-default">Créer un ticket</a>
-        </div>
-    </div>
 </div>
 </div>
-
+{% endfor %}
+</div>
+</div>
+{% endif %}
+</div>
+   
 </section>
+
+
+
+
+<script>
+
+ $('#ui-user-search').search({
+      type: 'category',
+      searchFields: ['Id', 'Name', 'Email'],
+      fullTextSearch: true,
+      onSelect: function onSelect(result, response) {
+        console.log(result);
+      },
+      apiSettings: {
+        responseAsync: function mockResponseAsync(settings, callback) {
+          if (settings.urlData.query) {
+            (function() {
+              var result = {
+                "results": {}
+              };
+
+              mockUsers.filter(function(user) {
+                return user.Name.toLowerCase().includes(settings.urlData.query.toLowerCase());
+              }).forEach(function(item) {
+                console.log(item);
+                result.results['category' + item.Id.toString()] = {
+                  "name": item.Id.toString(),
+                  "results": [item]
+                };
+              });
+              callback(result);
+            })();
+          } else callback({});
+        },
+        throttle: 400
+      },
+      templates: {
+        message: function message(type, _message) {
+          var html = '<div class="message empty"><div class="header">Aucun résultat</div></div>';
+          return html;
+        },
+        category: function category(response) {
+          var html = '';
+          Object.keys(response.results).forEach(function(key) {
+            html += '<div class="category"><div class="name">#' + response.results[key].results[0].Type + '</div> <a href="/profile/' + response.results[key].results[0].Id + '"class="result"><div class="content"><div class="title">' + response.results[key].results[0].Name + ' ' + response.results[key].results[0].Forename + '</div><div class="description">' + response.results[key].results[0].Email + '</div></div></a></div>';
+          });
+          return html;
+        }
+      }
+    });
+
+var mockUsers = [
+{% for users in users %}
+{ Id: '{{ users.id }}',
+Forename: '{{ users.forename }}',
+Name: '{{ users.name }}',
+Email: '{{ users.email }}',
+Type: '{{ users.type.name }}' }, 
+{% endfor %}
+];
+
+
+</script>
 {% endblock %}

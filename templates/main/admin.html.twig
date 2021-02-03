@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Aide - Plateforme ERPI{% endblock %}
+
+{% block body %}
+<section class="global">
+<div class="uk-card uk-card-default uk-card-body">
+<h1 class="ui header">Admin panel</h1>
+        {% for label, messages in app.flashes %}
+            <div class="uk-alert-primary" uk-alert>
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+<h4>Liste des tickets</h4>
+<ul>
+{% for tickets in tickets %}
+<li>{{tickets.content}} envoyé par : {{tickets.sentby.name}} {{tickets.sentby.forename}}</li>
+{% endfor %}
+</ul>
+<br>
+<h4>Ajouter une actualité</h4>
+ {{ form_start(formActuality) }}
+ {{ form_row(formActuality.content, { 'label': 'Contenu' }) }}
+
+    <div class="uk-margin center">
+       <button type="submit" class="btn uk-button uk-button-default center">Créer</button>
+    </div>
+{{ form_end(formActuality) }}
+{% endblock %}

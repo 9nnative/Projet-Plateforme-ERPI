@@ -12,16 +12,6 @@ class UserTaskType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email')
-            ->add('roles')
-            ->add('password')
-            ->add('forename')
-            ->add('name')
-            ->add('company')
-            ->add('school')
-            ->add('bio')
-            ->add('type')
-            ->add('follow')
             ->add('attrtask')
         ;
     }

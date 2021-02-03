@@ -25,6 +25,7 @@ class ProjectType extends AbstractType{
         $today = new \DateTime();
         $builder
         ->add('title', TextType::class, [
+            'purify_html' => true,
             'attr' => ['class' => 'uk-input'],
         ])
         ->add('theme', TextType::class, [
@@ -37,18 +38,20 @@ class ProjectType extends AbstractType{
             'widget' => 'single_text',
         ])
         ->add('summary',TextType::class, [
+            'purify_html' => true,
             'attr' => ['class' => 'uk-input'],
         ])
         ->add('fincancial_details', MoneyType::class, [
-            'divisor' => 100,
             'required' => false,
         ])
         ->add('content', CKEditorType::class, [
+            'purify_html' => true,
             'attr' => ['class' => 'uk-input'],
         ])
         ->add('is_private', CheckBoxType::class,[
-        'required' => false],
-    );
+            'attr' => ['class' => 'ui checkbox'],
+            'required' => false],
+        );
 
         }
 
